@@ -9,9 +9,33 @@ html{
 }
 
 body{
-    font-family:Inter,sans-serif;
-    background:#0f0f0f;
-    color:#fff;
+    background:#fff;
+    color: #0f0f0f;
+    font-family: "Kode Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  position: relative;
+}
+
+.container{
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 80px;
+}
+
+.bg-pattern{
+    position:fixed;
+    inset:0;
+
+    background-image:url("assets/pattern.webp");
+    background-repeat:repeat;
+
+    mix-blend-mode: exclusion;
+    opacity:0.6;
+
+    pointer-events:none;
+    z-index:-1;
 }
 
 .navbar{
@@ -24,16 +48,40 @@ body{
     width:100%;
 
     backdrop-filter:blur(10px);
+    z-index: 10;
+}
+
+.red {
+    color: #C8152A;
 }
 
 nav{
     display:flex;
-    gap:24px;
+    gap:56px;
+    font-weight: 500;
+}
+
+.hireme {
+    background: #C8152A;
+    padding: 12px 24px;
+    color: #fff;
+}
+
+.stat_cnt {
+    position: absolute;
+    top: 4%;
+    right: 6%;
+}
+
+.st_txt {
+    font-size: 24px;
+    font-weight: 500;
+    rotate: 351deg;
 }
 
 nav a{
     text-decoration:none;
-    color:white;
+    color: #0f0f0f;
 }
 
 .hero{
@@ -49,8 +97,55 @@ nav a{
 }
 
 .hero h1{
-    font-size:72px;
+    font-size:150px;
     margin-bottom:16px;
+    mix-blend-mode: exclusion;
+    color: #fff;
+}
+
+.rev_red {
+    color: #28FFE6;
+}
+
+.hero_img {
+    position: absolute;
+    left: 10%;
+    top: 6%;
+    z-index: -1;
+}
+
+.hero_cnt {
+    margin-top: 15%;
+    font-size: 72px;
+    font-weight: 600;
+}
+
+.pmc_des {
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.image-wrapper{
+    position:relative;
+    width:350px;
+    height:350px;
+}
+
+.img-back{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    z-index:1;
+}
+
+.img-front{
+    position:absolute;
+    top:0px;
+    left:0px;
+    width:100%;
+    z-index:2;
 }
 
 .hero p{
@@ -92,4 +187,37 @@ footer{
     text-align:center;
     padding:40px;
     border-top:1px solid #262626;
+}
+
+.marquee{
+    overflow:hidden;
+    background:#000;
+    white-space:nowrap;
+    padding: 16px 0;
+    color: #fff;
+}
+
+.track{
+    display:flex;
+    width:max-content;
+    animation:scroll 15s linear infinite;
+}
+
+.group{
+    flex-shrink:0;
+    font-size: 24px;
+}
+
+@keyframes scroll{
+    100%{
+        transform:translateX(-50%);
+    }
+}
+
+.drip {
+    font-size: 20px;
+}
+
+.drip_txt {
+    font-size: 20px;
 }
