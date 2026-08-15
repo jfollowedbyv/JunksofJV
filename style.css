@@ -11,7 +11,7 @@ html{
 body{
     background:#fff;
     color: #0f0f0f;
-    font-family: "Kode Mono", monospace;
+    font-family: "Kode Mono", monospace !important;
   font-optical-sizing: auto;
   font-weight: 300;
   font-style: normal;
@@ -38,7 +38,7 @@ body{
     z-index:-1;
 }
 
-.navbar{
+.mynav{
     display:flex;
     justify-content:space-between;
     align-items:center;
@@ -81,7 +81,7 @@ nav{
 
 nav a{
     text-decoration:none;
-    color: #0f0f0f;
+    color: #0f0f0f !important;
 }
 
 .hero{
@@ -215,9 +215,38 @@ footer{
 }
 
 .drip {
-    font-size: 20px;
+    font-size: 72px;
+    color: white;
 }
 
 .drip_txt {
-    font-size: 20px;
+    font-size: 50px;
+    color: white;
+    font-weight: 600;
+}
+
+.drip_cntn {
+    font-size: 16px;
+    color: white;
+    font-weight: 500;
+    line-height: 2.2;
+}
+
+.redd {
+    color: #C8152A;
+    font-weight: 600;
+}
+
+.drip_bg {
+    background: url('assets/drip.png');
+    height: 826px;
+}
+
+.linee {
+    color: white !important;
+    opacity: 1 !important;
+    position: absolute;
+    width: 100%;
+    top: 16px;
+    z-index: 0;
 }
