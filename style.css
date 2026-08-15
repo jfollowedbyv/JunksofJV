@@ -51,10 +51,6 @@ body{
     z-index: 10;
 }
 
-.red {
-    color: #C8152A;
-}
-
 nav{
     display:flex;
     gap:56px;
@@ -110,7 +106,7 @@ nav a{
 .hero_img {
     position: absolute;
     left: 10%;
-    top: 6%;
+    top: 5%;
     z-index: -1;
 }
 
@@ -164,7 +160,7 @@ nav a{
 }
 
 .section{
-    padding:120px 8%;
+    padding:80px 8%;
 }
 
 .section h2{
@@ -249,4 +245,143 @@ footer{
     width: 100%;
     top: 16px;
     z-index: 0;
+}
+
+.project-card_1 {
+    width: -webkit-fill-available;
+    rotate: 12deg;
+    transition: transform 0.4s ease;
+}
+
+.project-card_2 {
+    width: -webkit-fill-available;
+    rotate: -12deg;
+    transition: transform 0.4s ease;
+}
+
+.project-card_1:hover {
+    transform: rotate(-12deg);
+}
+
+.project-card_2:hover {
+    transform: rotate(12deg);
+}
+
+.scramble{
+    font-size: 4rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.drafting{
+    position: relative;
+    width: -webkit-fill-available;
+    height: 140px;
+}
+
+.drafting span{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #c41230;
+    transition: all 0.9s cubic-bezier(.22,1,.36,1);
+}
+
+/* Scattered state */
+.drafting span:nth-child(1){transform:translate(-70px,-40px) rotate(-35deg);}
+.drafting span:nth-child(2){transform:translate(60px,-50px) rotate(45deg);}
+.drafting span:nth-child(3){transform:translate(-50px,35px) rotate(-20deg);}
+.drafting span:nth-child(4){transform:translate(50px,40px) rotate(30deg);}
+.drafting span:nth-child(5){transform:translate(0,-65px) rotate(-40deg);}
+.drafting span:nth-child(6){transform:translate(-80px,0) rotate(25deg);}
+.drafting span:nth-child(7){transform:translate(80px,10px) rotate(-50deg);}
+.drafting span:nth-child(8){transform:translate(10px,60px) rotate(35deg);}
+.drafting span:nth-child(9){transform:translate(35px,-5px);}
+.drafting span:nth-child(10){transform:translate(60px,20px);}
+
+/* Assemble */
+.drafting:hover span:nth-child(1){transform:translate(-90px,0) rotate(0);}
+.drafting:hover span:nth-child(2){transform:translate(-65px,0) rotate(0);}
+.drafting:hover span:nth-child(3){transform:translate(-40px,0) rotate(0);}
+.drafting:hover span:nth-child(4){transform:translate(-15px,0) rotate(0);}
+.drafting:hover span:nth-child(5){transform:translate(10px,0) rotate(0);}
+.drafting:hover span:nth-child(6){transform:translate(35px,0) rotate(0);}
+.drafting:hover span:nth-child(7){transform:translate(60px,0) rotate(0);}
+.drafting:hover span:nth-child(8){transform:translate(85px,0) rotate(0);}
+.drafting:hover span:nth-child(9){transform:translate(110px,0) rotate(0);}
+.drafting:hover span:nth-child(10){transform:translate(125px,0) rotate(0);}
+
+.phil {
+    font-size: 18px;
+    line-height: 1.8;
+    font-weight: 600;
+}
+
+.movee{
+    position: relative;
+    width: 100%;
+    height: 70px;
+    overflow: hidden;
+}
+
+.ball{
+    position: absolute;
+    width: 78px;
+    bottom: 0;
+
+    animation: rollBounce 10s linear infinite alternate;
+}
+
+@keyframes rollBounce{
+    0%{
+        left: -5px;
+        transform: rotate(0deg);
+    }
+
+    5%{
+        left: -5px;
+        transform: rotate(0deg);
+    }
+
+    50%{
+        left: calc(100% - 75px);
+        transform: rotate(720deg);
+    }
+
+    55%{
+        left: calc(100% - 75px);
+        transform: rotate(720deg);
+    }
+
+    100%{
+        left: -5px;
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes seesaw{
+    0%,5%{
+        transform: rotate(-3deg);
+    }
+
+    50%,55%{
+        transform: rotate(3deg);
+    }
+
+    100%{
+        transform: rotate(-3deg);
+    }
+}
+
+.pitch {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 600;
+    color: white;
+}
+
+.tool-img {
+    width: 70%;
 }
