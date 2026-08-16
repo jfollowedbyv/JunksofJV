@@ -8,6 +8,10 @@ html{
     scroll-behavior:smooth;
 }
 
+a {
+    color: inherit !important;
+}
+
 body{
     background:#fff;
     color: #0f0f0f;
@@ -43,7 +47,7 @@ body{
     justify-content:space-between;
     align-items:center;
 
-    padding:24px 8%;
+    padding:16px 8%;
     position:fixed;
     width:100%;
 
@@ -65,7 +69,7 @@ nav{
 
 .stat_cnt {
     position: absolute;
-    top: 4%;
+    top: 3%;
     right: 6%;
 }
 
@@ -106,12 +110,12 @@ nav a{
 .hero_img {
     position: absolute;
     left: 10%;
-    top: 5%;
+    top: 3.5%;
     z-index: -1;
 }
 
 .hero_cnt {
-    margin-top: 15%;
+    margin-top: 12%;
     font-size: 72px;
     font-weight: 600;
 }
@@ -160,7 +164,7 @@ nav a{
 }
 
 .section{
-    padding:80px 8%;
+    padding:84px 8%;
 }
 
 .section h2{
@@ -385,3 +389,66 @@ footer{
 .tool-img {
     width: 70%;
 }
+
+.pg-card{
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.pg-card::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: #c8152a;
+    transition: width .5s ease;
+    z-index: -1;
+}
+
+.pg-card:hover::before{
+    width: 100%;
+}
+
+.pg-card{
+    transition: color .3s ease;
+}
+
+.pg-card:hover h5,
+.pg-card:hover .redd{
+    color: #fff !important;
+}
+
+.pg-card_2{
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.pg-card_2::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 100%;
+    background: #c8152a;
+    transition: width .5s ease;
+    z-index: -1;
+}
+
+.pg-card_2:hover::before{
+    width: 100%;
+}
+
+.pg-card_2{
+    transition: color .3s ease;
+}
+
+.pg-card_2:hover h5,
+.pg-card_2:hover .redd{
+    color: #fff !important;
+}
+
