@@ -318,7 +318,7 @@ footer{
 .drafting:hover span:nth-child(10){transform:translate(125px,0) rotate(0);}
 
 .phil {
-    font-size: 18px;
+    font-size: 22px;
     line-height: 1.8;
     font-weight: 600;
 }
@@ -452,3 +452,13 @@ footer{
     color: #fff !important;
 }
 
+.type-cursor::after{
+    content: "|";
+    animation: blink .8s infinite;
+}
+
+@keyframes blink{
+    50%{
+        opacity: 0;
+    }
+}
