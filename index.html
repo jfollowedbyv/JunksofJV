@@ -27,9 +27,9 @@
             <a href="#toolkit">Toolkit</a>
             <a href="#playground">Playground</a>
         </nav>
-        <div class="hireme">
-            <a href="#hireme" style="color: #fff;">Let's Talk!</a>
-        </div>
+
+            <button class="talk-btn hireme" onclick="openModal()">Let's Talk</button>
+
     </header>
 
     <!-- Hero -->
@@ -53,6 +53,40 @@
         </div>
         
     </section>
+
+    <div class="contact-pop" id="contactModal">
+    <div class="pop-content">
+        <button class="close-btn" onclick="closeModal()">
+            ×
+        </button>
+
+        <h2>Let's Create Something Great.</h2>
+
+        <p>
+            Have a project in mind, a collaboration opportunity,
+            or just want to say hello? I'd love to hear from you.
+        </p>
+
+        <div class="contact-links">
+            <a href="mailto:j.followedby.v@gmail.com" target="_blank">
+                <img width="20px" src="/assets/arroba.png">&nbsp;Email Me
+            </a>
+
+            <a href="https://wa.me/919751395152" target="_blank">
+                <img width="20px" src="/assets/whatsapp.png">&nbsp;WhatsApp
+            </a>
+
+            <a href="https://linkedin.com/in/junksofjv" target="_blank">
+                <img width="20px" src="/assets/linkedin.png">&nbsp;LinkedIn
+            </a>
+
+            <a href="https://www.behance.net/j_followedby_v" target="_blank">
+                <img width="20px" src="/assets/behance.png">&nbsp;Behance
+            </a>
+        </div>
+
+    </div>
+</div>
 
     <!-- About -->
 
@@ -275,22 +309,78 @@ document.querySelectorAll(".scramble").forEach(el => {
 
     <script>
         const el = document.getElementById("typewriter");
-const text = el.innerHTML;
-el.classList.add("type-cursor");
+const originalText = el.innerHTML;
 
 el.innerHTML = "";
 
-let i = 0;
+let started = false;
 
-function typeWriter() {
-    if (i < text.length) {
-        el.innerHTML += text.charAt(i);
-        i++;
-        setTimeout(typeWriter, 50);
+function startTyping() {
+    let i = 0;
+
+    function type() {
+        if (i < originalText.length) {
+            el.innerHTML += originalText.charAt(i);
+            i++;
+            setTimeout(type, 15);
+        }
     }
+
+    type();
 }
 
-typeWriter();
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting && !started) {
+            started = true;
+            startTyping();
+        }
+    });
+}, {
+    threshold: 0.4
+});
+
+observer.observe(el);
+    </script>
+
+    <script>
+        function openModal() {
+    document
+        .getElementById("contactModal")
+        .classList.add("active");
+}
+
+function closeModal() {
+    document
+        .getElementById("contactModal")
+        .classList.remove("active");
+}
+
+window.addEventListener("click", function(e) {
+    const modal = document.getElementById("contactModal");
+
+    if (e.target === modal) {
+        closeModal();
+    }
+});
+    </script>
+
+    <script>
+        const peeks = document.querySelectorAll(".peek");
+
+let current = 0;
+
+setInterval(() => {
+
+    peeks.forEach(p => p.classList.remove("active"));
+
+    const randomIndex = Math.floor(
+        Math.random() * peeks.length
+    );
+
+    peeks[randomIndex].classList.add("active");
+
+}, 2500);
     </script>
 
     <script src="script.js"></script>

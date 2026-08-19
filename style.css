@@ -22,6 +22,11 @@ body{
   position: relative;
 }
 
+::selection {
+    color: #fff;
+    background: #C8152A;
+}
+
 .container{
     max-width: 1440px;
     margin: 0 auto;
@@ -461,4 +466,123 @@ footer{
     50%{
         opacity: 0;
     }
+}
+
+.talk-btn{
+    padding:12px 24px;
+    border:none;
+    cursor:pointer;
+}
+
+.contact-pop{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.6);
+    backdrop-filter:blur(10px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    opacity:0;
+    visibility:hidden;
+    transition:.3s ease;
+    z-index:9999;
+}
+
+.contact-pop.active{
+    opacity:1;
+    visibility:visible;
+}
+
+.pop-content{
+    position:relative;
+    width:min(500px,90%);
+    padding:40px;
+    border-radius:24px;
+    background:#111;
+    color:#fff;
+    text-align:center;
+    transform:translateY(20px);
+    transition:.3s ease;
+}
+
+.contact-pop.active .pop-content{
+    transform:translateY(0);
+}
+
+.pop-content h2{
+    margin-bottom:12px;
+}
+
+.pop-content p{
+    opacity:.8;
+    margin-bottom:30px;
+}
+
+.contact-links{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.contact-links a{
+    text-decoration:none;
+    color:white;
+    padding:14px;
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:14px;
+    transition:.3s ease;
+}
+
+.contact-links a:hover{
+    transform:translateY(-3px);
+    background:#9d111ea8;
+}
+
+.close-btn{
+    position:absolute;
+    top:15px;
+    right:15px;
+    background:none;
+    border:none;
+    color:white;
+    font-size:24px;
+    cursor:pointer;
+}
+
+.pop-content{
+    position:relative;
+}
+
+.peek{
+    position:absolute;
+    width:80px;
+    opacity:0;
+    transition:.4s ease;
+    pointer-events:none;
+}
+
+.peek.active{
+    opacity:1;
+}
+
+.tl{
+    top:-20px;
+    left:-20px;
+}
+
+.tr{
+    top:-20px;
+    right:-20px;
+    transform:scaleX(-1);
+}
+
+.bl{
+    bottom:-20px;
+    left:-20px;
+}
+
+.br{
+    bottom:-20px;
+    right:-20px;
+    transform:scaleX(-1);
 }
