@@ -108,6 +108,10 @@ nav a{
     color: #fff;
 }
 
+.jv_mgn {
+    margin-top: 132px;
+}
+
 .rev_red {
     color: #28FFE6;
 }
@@ -343,6 +347,13 @@ footer{
     animation: rollBounce 10s linear infinite alternate;
 }
 
+.toolgrid {
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+    justify-items: center;
+}
+
 @keyframes rollBounce{
     0%{
         left: -5px;
@@ -399,6 +410,10 @@ footer{
     position: relative;
     overflow: hidden;
     z-index: 1;
+}
+
+.pg-head {
+    font-size: 24px;
 }
 
 .pg-card::before{
@@ -585,4 +600,120 @@ footer{
     bottom:-20px;
     right:-20px;
     transform:scaleX(-1);
+}
+
+.mobile-content {
+    display: none;
+}
+
+.desktop-content {
+    display: block;
+}
+
+@media (max-width: 768px) {
+
+    .desktop-content {
+        display: none;
+    }
+
+    .mobile-content {
+        display: block;
+    }
+
+    .hero h1 {
+    font-size: 60px;
+    margin-bottom: 16px;
+    mix-blend-mode: exclusion;
+    color: #fff;
+}
+
+.hero_cnt {
+    margin-top: 12%;
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.drip {
+    font-size: 42px;
+    color: white;
+}
+
+.pmc_des {
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+.group {
+    flex-shrink: 0;
+    font-size: 16px;
+}
+
+.section {
+    padding: 32px 8%;
+}
+
+.pg-head {
+    font-size: 13px;
+}
+
+h5 {
+    font-size: 11px !important;
+}
+
+h4 {
+    font-size: 14px !important;
+}
+
+h3 {
+    font-size: 15px !important;
+}
+
+h2 {
+    font-size: 16px !important;
+}
+
+p {
+    font-size: 14px !important;
+}
+
+.pitch {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    color: white;
+}
+
+.ball {
+    position: absolute;
+    width: 56px;
+    bottom: 0;
+    animation: rollBounce 10s linear infinite alternate;
+}
+
+.movee {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    overflow: hidden;
+}
+
+.hero_cnt {
+    margin-top: 0%;
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.jv_mgn {
+    margin-top: 100%;
+}
+
+.toolgrid {
+    display: grid;
+    grid-auto-flow: row;
+    align-items: center;
+    justify-items: center;
+    grid-template-columns: repeat(4, 1fr);
+}
+
 }
