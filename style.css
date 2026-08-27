@@ -902,11 +902,32 @@ h5 {
 
 /* Very large / 4K screens */
 @media (min-width: 1920px) {
-    .hero_img {
+.hero_img {
     position: absolute;
-    left: 15%;
-    top: 4.5%;
+    left: 20%;
+    top: 6.5%;
     z-index: -1;
+}
+
+.image-wrapper {
+    position: relative;
+    width: 420px;
+    height: 420px;
+}
+
+.hero h1 {
+    font-size: 180px;
+    margin-bottom: 16px;
+    mix-blend-mode: exclusion;
+    color: #fff;
+}
+
+.spec_body {
+    width: 8%;
+    margin-right: 5%;
+    z-index: 1;
+    top: -4px;
+    position: relative;
 }
 }
 
