@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en" data-state="pixel">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JunksofJV · Same page, three states</title>
+<meta name="description" content="Jegadeesh (JunksofJV): interfaces designed, animated and built. Switch the page between Pixel, Motion and Code.">
+<meta name="theme-color" content="#F6F6F3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E1030" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Kode+Mono:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F6F6F3; --ink:#1631C7; --soft:#3B4A9C; --line:#D6DAEE; --tint:#ECEEF8; --red:#D7263D; --on-ink:#F6F6F3;
+  --sans:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --mono:"Kode Mono", ui-monospace, Menlo, Consolas, monospace;
+  --pad:clamp(20px, 5vw, 72px); --max:1280px;
+  --ease:cubic-bezier(.22,1,.36,1);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --paper:#0E1030; --ink:#DCE2FF; --soft:#A9B3E8; --line:#2A2F63; --tint:#161A45; --red:#FF5465; --on-ink:#0E1030; color-scheme:dark; }
+}
+:root[data-theme="dark"]{ --paper:#0E1030; --ink:#DCE2FF; --soft:#A9B3E8; --line:#2A2F63; --tint:#161A45; --red:#FF5465; --on-ink:#0E1030; color-scheme:dark; }
+
+*,*::before,*::after{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-behavior:smooth; scroll-padding-top:calc(84px + env(safe-area-inset-top,0px)); -webkit-text-size-adjust:100%}
+body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:17px; line-height:1.55; font-variation-settings:"opsz" 16; overflow-x:hidden; transition:background-color .3s}
+img{max-width:100%; height:auto; display:block}
+a{color:inherit}
+h1,h2,h3,p,figure{margin:0}
+ul{list-style:none; margin:0; padding:0}
+.wrap{width:min(var(--max), 100% - 2*var(--pad)); margin-inline:auto}
+.soft{color:var(--soft)}
+.skip{position:absolute; left:12px; top:-60px; background:var(--ink); color:var(--on-ink); padding:10px 14px; z-index:200}
+.skip:focus{top:12px}
+:focus-visible{outline:3px solid var(--red); outline-offset:3px; border-radius:2px}
+
+/* ---------- Header ---------- */
+.top{position:sticky; top:0; z-index:50; background:color-mix(in srgb, var(--paper) 88%, transparent); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border-bottom:1px solid transparent; transition:border-color .2s}
+.top.is-stuck{border-bottom-color:var(--line)}
+.top__in{display:flex; align-items:center; gap:28px; height:68px}
+.brand{display:flex; align-items:center; gap:10px; font-weight:700; text-decoration:none; font-size:19px; letter-spacing:-.01em}
+.brand svg{width:30px; height:30px}
+.links{display:flex; gap:26px; margin-left:auto}
+.links a{text-decoration:none; font-size:15px; padding-block:8px; background:linear-gradient(currentColor,currentColor) 0 100%/0 2px no-repeat; transition:background-size .25s var(--ease)}
+.links a:hover{background-size:100% 2px}
+.talk{font-size:15px; font-weight:600; text-decoration:none; padding:10px 16px; border:1.5px solid var(--ink); border-radius:999px; transition:background-color .2s, color .2s}
+.talk:hover{background:var(--ink); color:var(--on-ink)}
+
+/* ---------- The switch (signature control) ---------- */
+.switch{display:inline-flex; padding:4px; border:1.5px solid var(--ink); border-radius:999px; position:relative; isolation:isolate}
+.switch button{appearance:none; border:0; background:none; color:var(--ink); font:600 15px/1 var(--sans); padding:10px 16px; border-radius:999px; cursor:pointer; position:relative; z-index:1; transition:color .25s}
+.switch button[aria-pressed="true"]{color:var(--on-ink)}
+.switch .pill{position:absolute; z-index:0; top:4px; bottom:4px; left:4px; border-radius:999px; background:var(--ink); transition:transform .35s var(--ease), width .35s var(--ease)}
+.switch button[aria-disabled="true"]{opacity:.45; cursor:not-allowed}
+.switch--lg button{font-size:clamp(17px,1.6vw,22px); padding:14px clamp(18px,2vw,28px)}
+.top .switch button{font-size:13px; padding:8px 12px}
+
+/* ---------- Hero ---------- */
+.hero{padding-block:clamp(32px,6vw,80px) clamp(56px,7vw,96px)}
+.name{font-weight:780; font-stretch:82%; font-size:clamp(88px, 25vw, 300px); line-height:.84; letter-spacing:-.025em; font-optical-sizing:auto; margin-left:-.04em}
+.name .l{display:inline-block; font-weight:var(--wg, 780); font-stretch:calc(var(--w, 82) * 1%); transition:font-weight .45s var(--ease), font-stretch .45s var(--ease)}
+.name .dot{color:var(--red)}
+.hero__grid{display:grid; grid-template-columns:repeat(12,1fr); gap:24px; align-items:end; margin-top:clamp(28px,4vw,56px)}
+.hero__mascot{grid-column:1 / span 2}
+.hero__mascot svg{width:clamp(72px,9vw,128px); height:auto; overflow:visible}
+.hero__intro{grid-column:3 / span 5; font-size:clamp(19px,1.7vw,24px); line-height:1.4}
+.hero__try{grid-column:8 / span 5; justify-self:end; display:grid; gap:14px; justify-items:end; text-align:right}
+.hero__try p{font-size:15px; color:var(--soft); max-width:30ch}
+.status{font-size:14px; color:var(--soft); min-height:1.4em}
+
+/* ---------- Generic section ---------- */
+.sec{padding-block:clamp(80px,10vw,152px); border-top:1px solid var(--line)}
+.sec__head{display:grid; grid-template-columns:repeat(12,1fr); gap:24px; align-items:end; margin-bottom:clamp(40px,5vw,72px)}
+.sec__head h2{grid-column:1 / span 7; font-weight:720; font-size:clamp(44px,6.4vw,96px); line-height:.95; letter-spacing:-.035em; font-variation-settings:"opsz" 96, "wdth" 85}
+.sec__head p{grid-column:9 / span 4; color:var(--soft)}
+
+/* ---------- About ---------- */
+.about__statement{font-weight:650; font-size:clamp(40px,6.4vw,104px); line-height:.98; letter-spacing:-.035em; font-variation-settings:"opsz" 96, "wdth" 78}
+.about__statement .not{font-weight:300; font-variation-settings:"opsz" 96, "wdth" 100}
+.about__body{display:grid; grid-template-columns:repeat(12,1fr); gap:24px; margin-top:clamp(40px,5vw,72px)}
+.about__body > p{grid-column:1 / span 6; font-size:clamp(18px,1.5vw,21px)}
+.states{grid-column:8 / span 5; display:grid; gap:0}
+.states li{display:grid; grid-template-columns:96px 1fr; gap:16px; padding:18px 0; border-top:1px solid var(--line)}
+.states li:last-child{border-bottom:1px solid var(--line)}
+.states b{font-weight:700}
+
+/* ---------- Work index with preview ---------- */
+.work{display:grid; grid-template-columns:repeat(12,1fr); gap:24px; align-items:start}
+.work__list{grid-column:1 / span 6}
+.work__item{display:grid; grid-template-columns:1fr auto; gap:6px 16px; align-items:baseline; padding:22px 0; border-top:1px solid var(--line); text-decoration:none; position:relative}
+.work__item:last-child{border-bottom:1px solid var(--line)}
+.work__item h3{font-weight:650; font-size:clamp(26px,2.8vw,40px); letter-spacing:-.025em; line-height:1.05; font-variation-settings:"opsz" 72, "wdth" 85; transition:font-variation-settings .35s var(--ease), transform .35s var(--ease)}
+.work__item p{grid-column:1; color:var(--soft); font-size:15px}
+.work__item .go{grid-row:1; grid-column:2; font-size:15px; color:var(--soft); transition:color .2s}
+.work__item:hover h3, .work__item.is-active h3{font-variation-settings:"opsz" 72, "wdth" 100; transform:translateX(8px)}
+.work__item:hover .go, .work__item.is-active .go{color:var(--red)}
+.work__item .thumb{display:none}
+.work__draft{padding:22px 0; color:var(--soft); display:flex; align-items:center; gap:14px}
+.work__draft img{width:64px}
+.work__preview{grid-column:8 / span 5; position:sticky; top:108px}
+.frame{position:relative; background:var(--tint); aspect-ratio:606/474; overflow:hidden; border-radius:4px}
+.frame img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transform:scale(1.03); transition:opacity .45s var(--ease), transform .6s var(--ease)}
+.frame img.is-on{opacity:1; transform:none}
+.preview__cap{margin-top:14px; display:flex; justify-content:space-between; gap:16px; font-size:15px; color:var(--soft)}
+
+/* ---------- Philosophy ---------- */
+.philo{display:grid; grid-template-columns:repeat(12,1fr); gap:24px}
+.quote{grid-column:1 / -1; font-weight:300; font-size:clamp(56px,10vw,168px); line-height:.9; letter-spacing:-.045em; font-variation-settings:"opsz" 96, "wdth" 100}
+.quote em{font-style:normal; font-weight:800; font-variation-settings:"opsz" 96, "wdth" 75}
+.philo p{grid-column:5 / span 7; font-size:clamp(18px,1.5vw,21px); margin-top:clamp(32px,4vw,56px)}
+
+/* ---------- Toolkit ---------- */
+.tools{display:grid; grid-template-columns:4fr 2fr 3fr; gap:24px}
+.tools section{background:var(--tint); border-radius:4px; padding:28px}
+.tools h3{font-weight:700; font-size:22px; letter-spacing:-.01em}
+.tools h3 + p{color:var(--soft); font-size:15px; margin-top:4px}
+.tools ul{display:flex; flex-wrap:wrap; gap:18px 22px; margin-top:28px}
+.tools li{display:grid; justify-items:center; gap:8px; font-size:14px; width:82px; text-align:center; color:var(--soft)}
+.tools img{width:64px; height:64px; object-fit:contain}
+
+/* ---------- Playground ---------- */
+.play{display:grid; grid-template-columns:repeat(3,1fr); gap:24px}
+.play article{border:1.5px solid var(--ink); border-radius:4px; padding:28px; display:flex; flex-direction:column; gap:16px; transition:transform .4s var(--ease)}
+.play .logo{height:132px; display:grid; place-items:center; background:#FFFFFF; border-radius:2px; overflow:hidden}
+.play .logo img{height:250px; width:auto; max-width:none}
+.play h3{font-weight:700; font-size:clamp(20px,1.8vw,26px); letter-spacing:-.015em; line-height:1.15}
+.play p{color:var(--soft); font-size:15px}
+
+/* ---------- Contact ---------- */
+.hello{display:grid; grid-template-columns:repeat(12,1fr); gap:24px; align-items:end}
+.hello figure{grid-column:1 / span 4; background:var(--ink); border-radius:4px; overflow:hidden; aspect-ratio:403/500; display:flex; align-items:flex-end}
+.hello figure img{width:100%; filter:grayscale(1) contrast(1.05); mix-blend-mode:luminosity}
+.hello__txt{grid-column:6 / span 7; display:grid; gap:24px}
+.hello__txt h2{font-weight:720; font-size:clamp(44px,6vw,92px); line-height:.95; letter-spacing:-.035em; font-variation-settings:"opsz" 96, "wdth" 85}
+.hello__txt > p{font-size:clamp(18px,1.5vw,21px)}
+.mail{font-weight:650; font-size:clamp(22px,3.2vw,46px); letter-spacing:-.02em; text-decoration:none; word-break:break-all; background:linear-gradient(var(--red),var(--red)) 0 100%/100% 3px no-repeat; padding-bottom:4px; width:fit-content; transition:color .2s}
+.mail:hover{color:var(--red)}
+.elsewhere{display:flex; flex-wrap:wrap; gap:4px 24px}
+.elsewhere a{font-size:16px; padding-block:10px; text-underline-offset:5px}
+.motto{color:var(--soft)}
+
+/* ---------- End + footer ---------- */
+.end{padding-block:clamp(80px,10vw,140px); text-align:center; border-top:1px solid var(--line); display:grid; justify-items:center; gap:18px}
+.end p{font-weight:600; font-size:clamp(24px,3vw,44px); line-height:1.1; letter-spacing:-.02em}
+.end p + p{font-weight:300}
+.end svg{width:56px; height:56px}
+.foot{border-top:1px solid var(--line); padding-block:28px 40px; font-size:15px; color:var(--soft)}
+.foot__in{display:flex; justify-content:space-between; gap:12px 24px; flex-wrap:wrap}
+.foot ul{display:flex; flex-wrap:wrap; gap:4px 20px}
+.foot a{padding-block:8px; display:inline-block; text-underline-offset:4px}
+
+/* ---------- Mascot ---------- */
+.m-face{fill:var(--ink); transition:fill .3s, stroke .3s}
+.m-eye{stroke:var(--red)}
+.m-eyes{transition:transform .2s ease-out}
+
+/* =========================================================
+   STATE: MOTION  (only when the visitor allows motion)
+   ========================================================= */
+html[data-state="motion"] .tools li img{animation:bob 3.2s ease-in-out infinite; animation-delay:calc(var(--n,0) * -.4s)}
+html[data-state="motion"] .play article:hover{transform:rotate(-1.5deg) translateY(-6px)}
+html[data-state="motion"] .play article:nth-child(2):hover{transform:rotate(1.5deg) translateY(-6px)}
+html[data-state="motion"] .frame{transition:transform .5s var(--ease)}
+html[data-state="motion"] .quote em{display:inline-block; animation:stretch 3s var(--ease) infinite alternate}
+html[data-state="motion"] .end svg{animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px)}}
+@keyframes stretch{from{font-variation-settings:"opsz" 96, "wdth" 75} to{font-variation-settings:"opsz" 96, "wdth" 100}}
+
+/* =========================================================
+   STATE: CODE  (the page shows how it is built)
+   ========================================================= */
+html[data-state="code"] body{font-family:var(--mono); font-size:15px}
+html[data-state="code"] .name, html[data-state="code"] .sec__head h2, html[data-state="code"] .about__statement,
+html[data-state="code"] .quote, html[data-state="code"] .hello__txt h2, html[data-state="code"] .work__item h3, html[data-state="code"] .end p{font-family:var(--mono); letter-spacing:-.04em; font-weight:600}
+html[data-state="code"] .name{font-size:clamp(56px,13.5vw,200px)}
+html[data-state="code"] .quote{font-size:clamp(40px,7.4vw,120px)}
+html[data-state="code"] [data-tag]{outline:1px dashed color-mix(in srgb, var(--ink) 55%, transparent); outline-offset:4px; position:relative}
+html[data-state="code"] [data-tag]::before{content:attr(data-tag); position:absolute; top:-1.65em; left:0; font:500 11px/1.4 var(--mono); letter-spacing:0; color:var(--on-ink); background:var(--ink); padding:1px 6px; border-radius:2px; white-space:nowrap; z-index:5; pointer-events:none}
+html[data-state="code"] img{filter:grayscale(1) contrast(.9); opacity:.9}
+html[data-state="code"] .m-face{fill:none; stroke:var(--ink); stroke-width:1.5; stroke-dasharray:4 3}
+html[data-state="code"] .switch, html[data-state="code"] .switch button, html[data-state="code"] .switch .pill, html[data-state="code"] .talk, html[data-state="code"] .tools section, html[data-state="code"] .frame, html[data-state="code"] .play article{border-radius:0}
+.gridlay{position:fixed; inset:0; z-index:40; pointer-events:none; opacity:0; transition:opacity .3s}
+.gridlay .wrap{height:100%; display:grid; grid-template-columns:repeat(12,1fr); gap:24px}
+.gridlay span{background:color-mix(in srgb, var(--red) 7%, transparent); border-inline:1px solid color-mix(in srgb, var(--red) 25%, transparent)}
+html[data-state="code"] .gridlay{opacity:1}
+.inspector{position:fixed; left:16px; bottom:calc(16px + env(safe-area-inset-bottom,0px)); z-index:60; background:var(--ink); color:var(--on-ink); font:500 12px/1.6 var(--mono); padding:10px 14px; border-radius:2px; min-width:230px; transform:translateY(calc(100% + 32px)); visibility:hidden; transition:transform .35s var(--ease), visibility 0s .35s; pointer-events:none}
+html[data-state="code"] .inspector{transform:none; visibility:visible; transition:transform .35s var(--ease)}
+.inspector b{font-weight:600; color:var(--red)}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{transition-duration:.01ms !important; animation:none !important; scroll-behavior:auto !important}
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1023px){
+  .links{display:none}
+  .top__in{gap:14px}
+  .brand{margin-right:auto}
+  .hero__grid{grid-template-columns:1fr 1fr; row-gap:28px}
+  .hero__mascot{grid-column:1; grid-row:1}
+  .hero__intro{grid-column:1 / -1; grid-row:2}
+  .hero__try{grid-column:1 / -1; justify-self:start; justify-items:start; text-align:left}
+  .sec__head h2, .sec__head p{grid-column:1 / -1}
+  .about__body > p, .states{grid-column:1 / -1}
+  .work__list{grid-column:1 / -1}
+  .work__preview{display:none}
+  .work__item{grid-template-columns:1fr auto}
+  .work__item .thumb{display:block; grid-column:1 / -1; margin-top:14px; aspect-ratio:606/474; object-fit:cover; width:100%; border-radius:4px}
+  .philo p{grid-column:1 / -1}
+  .tools{grid-template-columns:1fr}
+  .play{grid-template-columns:1fr}
+  .hello figure{grid-column:1 / span 5}
+  .hello__txt{grid-column:6 / -1}
+}
+@media (max-width: 1023px) and (min-width: 640px){
+  .play{grid-template-columns:1fr 1fr}
+  .play article:last-child{grid-column:1 / -1}
+}
+@media (max-width: 639px){
+  body{font-size:16px}
+  .top .switch{display:none}
+  .switch--lg{width:100%}
+  .switch--lg button{flex:1; padding-inline:8px}
+  .hello figure, .hello__txt{grid-column:1 / -1}
+  .hello figure{max-width:340px}
+  .states li{grid-template-columns:76px 1fr}
+  .tools section{padding:22px}
+  .tools li{width:74px}
+  .tools img{width:56px; height:56px}
+  .inspector{left:12px; right:12px; min-width:0}
+}
+</style>
+<script>
+  (function(){var s='pixel';try{s=localStorage.getItem('jv-state')||'pixel'}catch(e){}
+  if(s==='motion'&&matchMedia('(prefers-reduced-motion: reduce)').matches)s='pixel';
+  document.documentElement.dataset.state=s;})();
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="mascot" viewBox="0 0 80 80">
+    <circle class="m-face" cx="40" cy="40" r="38"/>
+    <g class="m-eyes" fill="none" stroke-width="2.6" stroke-linecap="round" style="stroke:var(--red)">
+      <rect x="17" y="40" width="16" height="16" rx="3"/><path d="M21 44l8 8M29 44l-8 8"/>
+      <rect x="47" y="40" width="16" height="16" rx="3"/><path d="M51 44l8 8M59 44l-8 8"/>
+    </g>
+  </symbol>
+</svg>
+
+<div class="gridlay" aria-hidden="true"><div class="wrap"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+<div class="inspector" aria-hidden="true"><div><b>hover</b> any outlined block</div><div class="i-size">to read its size and type</div><div class="i-font"></div></div>
+
+<header class="top">
+  <div class="wrap top__in">
+    <a class="brand" href="#hero"><svg aria-hidden="true"><use href="#mascot"/></svg>JunksofJV</a>
+    <nav class="links" aria-label="Primary">
+      <a href="#work">Crafts</a><a href="#about">About</a><a href="#toolkit">Toolkit</a><a href="#playground">Playground</a>
+    </nav>
+    <div class="switch" role="group" aria-label="Page state">
+      <span class="pill" aria-hidden="true"></span>
+      <button type="button" data-set="pixel">Pixel</button><button type="button" data-set="motion">Motion</button><button type="button" data-set="code">Code</button>
+    </div>
+    <a class="talk" href="#contact">Let's talk</a>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="hero" aria-labelledby="name">
+    <div class="wrap">
+      <h1 class="name" id="name" data-tag="<h1 .name>" aria-label="Junks of JV"><span class="row" aria-hidden="true"><span class="l">J</span><span class="l">u</span><span class="l">n</span><span class="l">k</span><span class="l">s</span></span><br><span class="row" aria-hidden="true"><span class="l">o</span><span class="l">f</span>&nbsp;<span class="l">J</span><span class="l">V</span><span class="l dot">.</span></span></h1>
+      <div class="hero__grid">
+        <div class="hero__mascot" aria-hidden="true">
+          <svg viewBox="0 0 80 80" id="heroMascot"><circle class="m-face" cx="40" cy="40" r="38"/><g class="m-eyes" id="heroEyes" fill="none" stroke-width="2.6" stroke-linecap="round" style="stroke:var(--red)"><rect x="17" y="40" width="16" height="16" rx="3"/><path d="M21 44l8 8M29 44l-8 8"/><rect x="47" y="40" width="16" height="16" rx="3"/><path d="M51 44l8 8M59 44l-8 8"/></g></svg>
+        </div>
+        <p class="hero__intro" data-tag="<p .intro>">Digital experiences designed, animated, and developed by JunksofJV. Creating products that users enjoy using and brands are proud to showcase.</p>
+        <div class="hero__try">
+          <p>Every project goes through three states. So does this page.</p>
+          <div class="switch switch--lg" role="group" aria-label="Page state">
+            <span class="pill" aria-hidden="true"></span>
+            <button type="button" data-set="pixel">Pixel</button><button type="button" data-set="motion">Motion</button><button type="button" data-set="code">Code</button>
+          </div>
+          <p class="status" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="about" aria-labelledby="about-h">
+    <div class="wrap">
+      <h2 class="about__statement" id="about-h" data-tag="<h2 .statement>"><span class="not">Not just a</span> designer.<br><span class="not">Not just a</span> developer.</h2>
+      <div class="about__body">
+        <p data-tag="<p>">I sit at the intersection of design, motion, and frontend development. Over the past 2+ years, I've been helping transform ideas into polished digital experiences, from wireframes and interfaces to micro-interactions, animations, and production-ready websites.</p>
+        <ul class="states" data-tag="<ul .states>">
+          <li><b>Pixel</b><span>Wireframes and interfaces</span></li>
+          <li><b>Motion</b><span>Micro-interactions and animations</span></li>
+          <li><b>Code</b><span>Production-ready websites</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="work" aria-labelledby="work-h">
+    <div class="wrap">
+      <div class="sec__head"><h2 id="work-h" data-tag="<h2>">Selected crafts</h2><p>Seven projects across brand, product and web. One more is on the desk.</p></div>
+      <div class="work">
+        <div class="work__list" data-tag="<ol .work-index>">
+          <a class="work__item is-active" data-img="0" href="https://www.behance.net/gallery/250113157/Fork-Fire-Restaurant-Brand-Web-Design" target="_blank" rel="noopener noreferrer"><h3>Fork &amp; Fire</h3><span class="go">Behance</span><p>Restaurant brand and web design</p><img class="thumb" src="assets/Fork&amp;Fire.webp" width="606" height="474" alt="Fork &amp; Fire website on a laptop" loading="lazy"></a>
+          <a class="work__item" data-img="1" href="https://www.behance.net/gallery/204769055/Atelier-(The-Virtual-Art-Gallery)-UI-Concept-Web-Design" target="_blank" rel="noopener noreferrer"><h3>Atelier</h3><span class="go">Behance</span><p>Virtual art gallery, UI concept</p><img class="thumb" src="assets/atelier.webp" width="606" height="474" alt="Atelier virtual gallery concept" loading="lazy"></a>
+          <a class="work__item" data-img="2" href="https://www.behance.net/gallery/189703741/Triprr-Travel-Management-App-UI-UX-case-Study" target="_blank" rel="noopener noreferrer"><h3>Triprr</h3><span class="go">Behance</span><p>Travel management app, UX case study</p><img class="thumb" src="assets/Triprr.webp" width="606" height="474" alt="Triprr app on a phone" loading="lazy"></a>
+          <a class="work__item" data-img="3" href="https://www.behance.net/gallery/187515597/HapiPay-Digital-Payment-Application-UI" target="_blank" rel="noopener noreferrer"><h3>HapiPay</h3><span class="go">Behance</span><p>Digital payment app UI</p><img class="thumb" src="assets/HAPIPAY.webp" width="606" height="474" alt="HapiPay app on a phone" loading="lazy"></a>
+          <a class="work__item" data-img="4" href="https://www.behance.net/gallery/201754685/My-Space-(An-Inventory-Management-Dashboard-UI)" target="_blank" rel="noopener noreferrer"><h3>My Space</h3><span class="go">Behance</span><p>Inventory management dashboard</p><img class="thumb" src="assets/MySpace.webp" width="606" height="474" alt="My Space dashboard" loading="lazy"></a>
+          <a class="work__item" data-img="5" href="https://www.behance.net/gallery/194049717/X-Men-Apocalypse-(Movie-Website-UI-Design)" target="_blank" rel="noopener noreferrer"><h3>X-Men Apocalypse</h3><span class="go">Behance</span><p>Movie website UI design</p><img class="thumb" src="assets/X-MEN APOCALYPSE.webp" width="606" height="474" alt="X-Men Apocalypse website" loading="lazy"></a>
+          <a class="work__item" data-img="6" href="https://www.behance.net/gallery/204569631/XYZ-Industries-(Real-Estate-Landing-page-UI-Design)" target="_blank" rel="noopener noreferrer"><h3>XYZ Industries</h3><span class="go">Behance</span><p>Real-estate landing page</p><img class="thumb" src="assets/XYZIndustries.webp" width="606" height="474" alt="XYZ Industries landing page" loading="lazy"></a>
+          <div class="work__draft"><img src="assets/Hang.gif" width="150" height="120" alt="" loading="lazy"><span>Drafting the next one.</span></div>
+        </div>
+        <div class="work__preview" aria-hidden="true" data-tag="<figure .preview sticky>">
+          <div class="frame">
+            <img class="is-on" src="assets/Fork&amp;Fire.webp" width="606" height="474" alt="">
+            <img src="assets/atelier.webp" width="606" height="474" alt="" loading="lazy">
+            <img src="assets/Triprr.webp" width="606" height="474" alt="" loading="lazy">
+            <img src="assets/HAPIPAY.webp" width="606" height="474" alt="" loading="lazy">
+            <img src="assets/MySpace.webp" width="606" height="474" alt="" loading="lazy">
+            <img src="assets/X-MEN APOCALYPSE.webp" width="606" height="474" alt="" loading="lazy">
+            <img src="assets/XYZIndustries.webp" width="606" height="474" alt="" loading="lazy">
+          </div>
+          <div class="preview__cap"><span class="cap-t">Fork &amp; Fire</span><span>Hover a title to preview</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="philosophy" aria-labelledby="philo-h">
+    <div class="wrap philo">
+      <h2 class="quote" id="philo-h" data-tag="<blockquote>">I design, therefore <em>I am.</em></h2>
+      <p data-tag="<p>">Every project begins as a collection of ideas, sketches, and possibilities. My role is to shape that creative chaos into something purposeful. JunksofJV is rooted in the belief that every idea has potential. Through design, motion, and code, I turn rough concepts into experiences worth remembering.</p>
+    </div>
+  </section>
+
+  <section class="sec" id="toolkit" aria-labelledby="tk-h">
+    <div class="wrap">
+      <div class="sec__head"><h2 id="tk-h" data-tag="<h2>">Toolkit</h2><p>Nine tools, sorted by the state they serve.</p></div>
+      <div class="tools">
+        <section data-tag="<section .pixel>"><h3>Pixel</h3><p>Shaping the interface</p>
+          <ul><li style="--n:0"><img src="assets/figma.webp" width="120" height="119" alt="" loading="lazy">Figma</li><li style="--n:1"><img src="assets/xd.webp" width="120" height="120" alt="" loading="lazy">Adobe XD</li><li style="--n:2"><img src="assets/ps.webp" width="120" height="120" alt="" loading="lazy">Photoshop</li><li style="--n:3"><img src="assets/ai.webp" width="120" height="120" alt="" loading="lazy">Illustrator</li></ul></section>
+        <section data-tag="<section .motion>"><h3>Motion</h3><p>Making it move</p>
+          <ul><li style="--n:4"><img src="assets/ae.webp" width="120" height="120" alt="" loading="lazy">After Effects</li><li style="--n:5"><img src="assets/lottie.webp" width="120" height="120" alt="" loading="lazy">LottieFiles</li></ul></section>
+        <section data-tag="<section .code>"><h3>Code</h3><p>Shipping it</p>
+          <ul><li style="--n:6"><img src="assets/html5.webp" width="120" height="122" alt="" loading="lazy">HTML</li><li style="--n:7"><img src="assets/css3.webp" width="120" height="116" alt="" loading="lazy">CSS</li><li style="--n:8"><img src="assets/js.webp" width="120" height="118" alt="" loading="lazy">JavaScript</li></ul></section>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="playground" aria-labelledby="pg-h">
+    <div class="wrap">
+      <div class="sec__head"><h2 id="pg-h" data-tag="<h2>">Playground</h2><p>This is where the junk becomes interesting.</p></div>
+      <div class="play">
+        <article data-tag="<article>"><div class="logo"><img src="assets/retrohub.png" width="280" height="400" alt="RetroHub" loading="lazy"></div><h3>For the classic lovers</h3><p>A passion project exploring how retro culture, timeless products, and modern UX can come together to create a shopping experience that feels both familiar and fresh.</p></article>
+        <article data-tag="<article>"><div class="logo"><img src="assets/atelier.png" width="280" height="400" alt="Atelier" loading="lazy"></div><h3>Art online</h3><p>A concept project exploring virtual exhibitions, interactive spaces, and curated collections through a seamless and engaging digital environment.</p></article>
+        <article data-tag="<article>"><div class="logo"><img src="assets/x_men.png" width="280" height="400" alt="X-Men" loading="lazy"></div><h3>A movie franchise in hand</h3><p>A concept project focused on cinematic visuals, character-driven storytelling, and an engaging fan experience.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="contact" aria-labelledby="hello-h">
+    <div class="wrap hello">
+      <figure><img src="assets/me.webp" width="403" height="561" alt="Portrait of Jegadeesh" loading="lazy"></figure>
+      <div class="hello__txt">
+        <h2 id="hello-h" data-tag="<h2>">Hey, I'm Jegadeesh.</h2>
+        <p>I design interfaces, animate ideas, build digital experiences, and occasionally turn caffeine into creative solutions. From UI/UX and motion graphics to content and web design, I'm driven by making things look good, feel right, and work seamlessly.</p>
+        <a class="mail" href="mailto:j.followedby.v@gmail.com" data-tag="<a mailto>">j.followedby.v@gmail.com</a>
+        <ul class="elsewhere">
+          <li><a href="https://wa.me/919751395152" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
+          <li><a href="tel:+919751395152">+91 97513 95152</a></li>
+          <li><a href="https://www.linkedin.com/in/junksofjv/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          <li><a href="https://www.behance.net/j_followedby_v" target="_blank" rel="noopener noreferrer">Behance</a></li>
+        </ul>
+        <p class="motto">Creating. Experimenting. Evolving.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="end" aria-label="End of page">
+    <p>You've reached the end of the scroll.</p>
+    <p>But the ideas don't stop here.</p>
+    <svg aria-hidden="true"><use href="#mascot"/></svg>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__in">
+    <span>© 2026 JunksofJV</span>
+    <ul aria-label="Follow">
+      <li><a href="https://www.behance.net/j_followedby_v" target="_blank" rel="noopener noreferrer">Behance</a></li>
+      <li><a href="https://www.linkedin.com/in/junksofjv/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+      <li><a href="https://www.youtube.com/@junksofjv" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+      <li><a href="https://www.instagram.com/junksofjv.studio/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+      <li><a href="https://lottiefiles.com/user/31aaace3-fb76-46e3-a35f-037290746fb4" target="_blank" rel="noopener noreferrer">LottieFiles</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const status = document.querySelector('.status');
+  const switches = [...document.querySelectorAll('.switch')];
+  const notes = {
+    pixel: 'Pixel: the designed page.',
+    motion: 'Motion: move your cursor over the name.',
+    code: 'Code: every block is outlined. Hover one to inspect it.'
+  };
+
+  function placePill(sw){
+    const on = sw.querySelector('[aria-pressed="true"]'), pill = sw.querySelector('.pill');
+    if (!on || !pill || !sw.offsetParent) return;
+    pill.style.width = on.offsetWidth + 'px';
+    pill.style.transform = `translateX(${on.offsetLeft - 4}px)`;
+  }
+  function setState(s, announce){
+    if (s === 'motion' && reduce.matches){ status.textContent = 'Motion is off because your device asks for reduced motion.'; return; }
+    root.dataset.state = s;
+    try { localStorage.setItem('jv-state', s); } catch(e) {}
+    switches.forEach(sw => { sw.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.set === s))); placePill(sw); });
+    if (announce) status.textContent = notes[s];
+    if (s !== 'motion') resetMotion();
+  }
+  switches.forEach(sw => sw.addEventListener('click', e => { const b = e.target.closest('button'); if (b) setState(b.dataset.set, true); }));
+  const markMotion = () => document.querySelectorAll('[data-set="motion"]').forEach(b => reduce.matches ? b.setAttribute('aria-disabled','true') : b.removeAttribute('aria-disabled'));
+  markMotion(); reduce.addEventListener?.('change', () => { markMotion(); if (reduce.matches && root.dataset.state === 'motion') setState('pixel'); });
+
+  // Header border once scrolled
+  const top = document.querySelector('.top'), s0 = document.createElement('div');
+  s0.style.cssText = 'position:absolute;top:0;height:1px;width:1px'; document.body.prepend(s0);
+  new IntersectionObserver(([e]) => top.classList.toggle('is-stuck', !e.isIntersecting)).observe(s0);
+
+  // Work index: hover / focus swaps the sticky preview
+  const imgs = [...document.querySelectorAll('.frame img')], items = [...document.querySelectorAll('.work__item')], cap = document.querySelector('.cap-t');
+  const show = it => { items.forEach(i => i.classList.toggle('is-active', i === it)); imgs.forEach((im, n) => im.classList.toggle('is-on', n === +it.dataset.img)); cap.textContent = it.querySelector('h3').textContent; };
+  items.forEach(it => { it.addEventListener('mouseenter', () => show(it)); it.addEventListener('focus', () => show(it)); });
+
+  // MOTION state: letters swell toward the pointer, mascot eyes follow, preview tilts
+  const letters = [...document.querySelectorAll('.name .l')], eyes = document.getElementById('heroEyes'), frame = document.querySelector('.frame');
+  let px = -9999, py = -9999, raf = 0;
+  function tick(){
+    raf = 0;
+    if (root.dataset.state !== 'motion') return;
+    letters.forEach(l => {
+      const r = l.getBoundingClientRect(), d = Math.hypot(px - (r.left + r.width/2), py - (r.top + r.height/2));
+      const k = Math.max(0, 1 - d / 420);
+      l.style.setProperty('--w', (82 + k * 18).toFixed(1)); l.style.setProperty('--wg', Math.round(780 - 380 * k + 20 * k * k));
+    });
+    const er = eyes.getBoundingClientRect(), ex = er.left + er.width/2, ey = er.top + er.height/2, a = Math.atan2(py - ey, px - ex), m = Math.min(5, Math.hypot(px - ex, py - ey) / 60);
+    eyes.style.transform = `translate(${(Math.cos(a)*m).toFixed(2)}px, ${(Math.sin(a)*m).toFixed(2)}px)`;
+    const fr = frame.getBoundingClientRect();
+    if (fr.width && py > fr.top - 200 && py < fr.bottom + 200){ const rx = (py - (fr.top + fr.height/2)) / fr.height, ry = (px - (fr.left + fr.width/2)) / fr.width; frame.style.transform = `perspective(900px) rotateX(${(-rx*5).toFixed(2)}deg) rotateY(${(ry*7).toFixed(2)}deg)`; }
+  }
+  function resetMotion(){ letters.forEach(l => { l.style.removeProperty('--w'); l.style.removeProperty('--wg'); }); if (eyes) eyes.style.transform = ''; if (frame) frame.style.transform = ''; }
+  addEventListener('pointermove', e => { px = e.clientX; py = e.clientY; if (root.dataset.state === 'motion' && !raf) raf = requestAnimationFrame(tick); }, { passive:true });
+
+  // CODE state: live inspector for outlined blocks
+  const insp = document.querySelector('.inspector'), iTag = insp.querySelector('div b'), iRest = insp.querySelector('div'), iSize = insp.querySelector('.i-size'), iFont = insp.querySelector('.i-font');
+  document.addEventListener('mouseover', e => {
+    if (root.dataset.state !== 'code') return;
+    const el = e.target.closest('[data-tag]'); if (!el) return;
+    const r = el.getBoundingClientRect(), cs = getComputedStyle(el);
+    iRest.innerHTML = '<b></b>'; iRest.firstChild.textContent = el.dataset.tag;
+    iSize.textContent = `${Math.round(r.width)} × ${Math.round(r.height)} px`;
+    iFont.textContent = `${cs.fontFamily.split(',')[0].replace(/"/g,'')} ${cs.fontWeight} / ${parseFloat(cs.fontSize)}px`;
+  });
+
+  // Boot: apply the saved state once everything above exists
+  setState(root.dataset.state || 'pixel', false);
+  addEventListener('resize', () => switches.forEach(placePill));
+  document.fonts?.ready.then(() => switches.forEach(placePill));
+})();
+</script>
+</body>
+</html>
