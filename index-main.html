@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JunksofJV · Pixel. Motion. Code.</title>
+<meta name="description" content="Jegadeesh (JunksofJV): digital experiences designed, animated and developed. Pixel. Motion. Code.">
+<meta property="og:title" content="JunksofJV · Pixel. Motion. Code.">
+<meta property="og:description" content="A little corner of the internet for pixels, motion, code, experiments and random ideas.">
+<meta property="og:image" content="https://junksofjv.vercel.app/web-app-manifest-512x512.png">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Architects+Daughter&display=swap" rel="stylesheet">
+<style>
+/* =================== Tokens =================== */
+:root{
+  --paper:#FFFFFF; --ink:#0F0F0F; --soft:#5A5A5A; --line:#E7E5E2; --tint:#F5F4F2;
+  --red:#C8152A; --red-hi:#F0384C; --on-ink:#FFFFFF;
+  --block:#0F0F0F; --block-ink:#FAFAF8; --block-soft:#A3A3A3; --block-line:#2E2E2E; --face:#0F0F0F;
+  --sans:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --hand:"Architects Daughter","Comic Sans MS",cursive;
+  --pad:clamp(20px,5vw,72px); --max:1280px; --ease:cubic-bezier(.22,1,.36,1);
+  color-scheme:light;
+}
+
+/* =================== Base =================== */
+*,*::before,*::after{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-behavior:smooth; scroll-padding-top:calc(84px + env(safe-area-inset-top,0px)); -webkit-text-size-adjust:100%}
+body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:17px; line-height:1.55; font-optical-sizing:auto; overflow-x:hidden}
+img{max-width:100%; height:auto; display:block}
+a{color:inherit}
+h1,h2,h3,p,figure{margin:0}
+ul{list-style:none; margin:0; padding:0}
+main{overflow-x:clip}
+.wrap{width:min(var(--max),100% - 2*var(--pad)); margin-inline:auto}
+.dot{color:var(--red)}
+.skip{position:absolute; left:12px; top:-60px; background:var(--red); color:#fff; padding:10px 14px; z-index:200}
+.skip:focus{top:12px}
+:focus-visible{outline:3px solid var(--red); outline-offset:3px}
+
+/* =================== Header =================== */
+.top{position:sticky; top:0; z-index:50; background:color-mix(in srgb,var(--paper) 90%,transparent); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border-bottom:1px solid transparent; transition:border-color .2s}
+.top.is-stuck{border-bottom-color:var(--line)}
+.top__in{display:flex; align-items:center; gap:28px; height:68px}
+.brand{display:flex; align-items:center; gap:10px; font-weight:750; font-stretch:88%; text-decoration:none; font-size:20px; letter-spacing:-.01em}
+.brand .logo-img{width:36px; height:36px; border-radius:8px}
+.links{display:flex; gap:26px; margin-left:auto}
+.links a{text-decoration:none; font-size:15px; padding-block:8px; background:linear-gradient(var(--red),var(--red)) 0 100%/0 2px no-repeat; transition:background-size .25s var(--ease)}
+.links a:hover{background-size:100% 2px}
+.talk{font-size:15px; font-weight:650; text-decoration:none; padding:11px 18px; background:var(--red); color:#fff; border-radius:16px; display:inline-block; transition:background-color .2s, transform .25s var(--ease)}
+.talk:hover{background:var(--ink); color:var(--paper)}
+.progress{position:fixed; left:0; right:0; top:0; height:3px; background:var(--red); transform-origin:0 50%; transform:scaleX(0); z-index:70; pointer-events:none; opacity:0}
+
+/* =================== Mascot =================== */
+.m-sm{display:block; width:100%; height:100%; overflow:visible}
+.m-face{fill:var(--face)}
+.mwrap{display:inline-block; position:relative}
+
+/* =================== Hero =================== */
+.hero{padding-block:clamp(28px,5vw,72px) clamp(48px,6vw,88px)}
+.hero{position:relative}
+.hero__top{display:grid; grid-template-columns:minmax(0,7fr) minmax(0,5fr); gap:24px; align-items:end}
+.hero__art{position:relative; width:100%; aspect-ratio:10/9; margin-top:96px; margin-bottom:-12px}
+.art{position:absolute; transition:transform .7s var(--ease)}
+.art img{width:100%; height:auto}
+.art--back{width:62%; right:2%; top:4%; filter:drop-shadow(0 24px 40px rgba(40,255,230,.35))}
+.art--front{width:66%; left:0; bottom:0; filter:drop-shadow(0 26px 44px rgba(200,21,42,.45))}
+.note{position:absolute; right:var(--pad); top:-4px; width:190px; pointer-events:none; z-index:4}
+.note img{width:120px; margin-left:auto}
+.note p{font-family:var(--hand); font-size:22px; transform:rotate(-9deg); margin-top:-4px}
+.name{font-weight:780; font-stretch:82%; font-size:clamp(88px,19vw,280px); line-height:.84; letter-spacing:-.025em; margin-left:-.04em}
+.name .l{display:inline-block; font-weight:var(--wg,780); font-stretch:calc(var(--w,82) * 1%); transition:font-weight .45s var(--ease), font-stretch .45s var(--ease)}
+.name .of{color:var(--red)}
+.hero__grid{display:grid; grid-template-columns:repeat(12,1fr); gap:24px; align-items:end; margin-top:clamp(28px,4vw,56px)}
+.hero__mascot{grid-column:1 / span 2; align-self:end}
+.hero__intro{grid-column:3 / span 5; font-size:clamp(19px,1.7vw,24px); line-height:1.4}
+.hero__cta{grid-column:8 / span 5; justify-self:end; display:grid; gap:18px; justify-items:end}
+.tagline{font-weight:760; font-stretch:82%; font-size:clamp(24px,2.4vw,34px); letter-spacing:-.02em}
+.ctas{display:flex; flex-wrap:wrap; gap:12px}
+.btn{display:inline-flex; align-items:center; min-height:48px; padding:13px 22px; border-radius:16px; font-weight:650; font-size:16px; text-decoration:none; transition:background-color .2s, color .2s, transform .25s var(--ease), box-shadow .2s}
+.btn--red{background:var(--red); color:#fff}
+.btn--red:hover{background:var(--ink)}
+.btn--line{border:1.5px solid var(--ink)}
+.btn--line:hover{background:var(--ink); color:#fff}
+.btn:active{scale:.97}
+/* ---------- Mascot: one sprite, nine directions ---------- */
+.mascot{--mx:1; --my:1; width:clamp(96px,9vw,128px); aspect-ratio:264/300; background:url(assets/mascot.png) 0 0 / 300% 300% no-repeat; background-position:calc(var(--mx) * 50%) calc(var(--my) * 50%); transition:translate .3s var(--ease); cursor:default}
+.mascot:hover{translate:0 -6px}
+.mascot--lg{width:clamp(200px,22vw,300px)}
+
+/* =================== Ticker =================== */
+.ticker{background:var(--ink); color:var(--paper); overflow:hidden; border-block:1px solid var(--ink); rotate:2deg; position:relative; top:48px; z-index:3; margin-inline:-2%}
+.ticker__track{display:flex; width:max-content}
+.ticker__g{display:flex; align-items:center; gap:28px; padding:16px 14px; font-weight:700; font-stretch:85%; font-size:clamp(18px,2vw,28px); letter-spacing:-.01em; white-space:nowrap}
+.ticker__g b{color:var(--red-hi); font-weight:700}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+/* =================== Section scaffolding =================== */
+.sec{padding-block:clamp(80px,10vw,152px)}
+.sec + .sec{border-top:1px solid var(--line)}
+.sec__head{display:grid; grid-template-columns:repeat(12,1fr); gap:24px; align-items:end; margin-bottom:clamp(40px,5vw,72px)}
+.h2{grid-column:1 / span 8; font-weight:760; font-stretch:82%; font-size:clamp(46px,6.6vw,104px); line-height:.92; letter-spacing:-.035em}
+.sec__head p{grid-column:9 / span 4; color:var(--soft)}
+.stickers{display:flex; align-items:center; gap:.22em; flex-wrap:wrap; padding-block:.12em}
+.sticker{background:var(--red); color:#fff; padding:.04em .22em .1em; border-radius:12px; display:inline-block}
+.stickers .sticker:first-child{rotate:-5deg}
+.stickers .sticker:last-child{rotate:4deg}
+.stickers.is-in .sticker:first-child{animation:wob 4s ease-in-out infinite}
+.stickers.is-in .sticker:last-child{animation:wob 4s ease-in-out -2s infinite}
+@keyframes wob{50%{rotate:3deg}}
+
+/* =================== About (black block) =================== */
+.about{background:linear-gradient(#3A3A3A, #2C2C2C); --red-hi:#FF6B7A; color:var(--block-ink); --face:#FAFAF8; --soft:var(--block-soft); --line:var(--block-line)}
+.about__in{padding-block:clamp(80px,10vw,140px) 32px}
+.statement{font-weight:700; font-stretch:78%; font-size:clamp(42px,6.6vw,108px); line-height:.98; letter-spacing:-.035em}
+.statement .not{font-weight:250; font-stretch:100%}
+.statement .r{color:var(--red-hi)}
+.statement .w{display:inline-block}
+.face{width:1.05em; height:.93em; vertical-align:-.12em; margin-inline:.04em}
+.face__gif{width:100%; height:100%; object-fit:contain}
+.about__body{display:grid; grid-template-columns:repeat(12,1fr); gap:24px; margin-top:clamp(40px,5vw,72px)}
+.about__body > p{grid-column:1 / span 6; font-size:clamp(18px,1.5vw,21px)}
+.about__body > p em{font-style:normal; color:var(--red-hi)}
+.drip-edge{display:block; width:100%; aspect-ratio:1243/457; background:url(assets/drip.png) center bottom / 100% auto no-repeat}
+.about-wrap{background:var(--paper)}
+.states{grid-column:8 / span 5}
+.states li{display:grid; grid-template-columns:96px 1fr; gap:16px; padding:18px 0; border-top:1px solid var(--line); color:var(--soft)}
+.states li:last-child{border-bottom:1px solid var(--line)}
+.states b{color:var(--block-ink); font-weight:700}
+.drips{display:block; width:100%; height:auto; background:var(--paper); fill:var(--block)}
+.drips .d{transform-box:fill-box; transform-origin:top}
+
+/* =================== Work index =================== */
+.work{display:grid; grid-template-columns:repeat(12,1fr); gap:24px; align-items:start}
+.work__list{grid-column:1 / span 6}
+.work__item{display:grid; grid-template-columns:1fr auto; gap:6px 16px; align-items:baseline; padding:22px 0; border-top:1px solid var(--line); text-decoration:none}
+.work__item h3{font-weight:680; font-stretch:85%; font-size:clamp(26px,2.8vw,40px); letter-spacing:-.025em; line-height:1.05; transition:font-stretch .35s var(--ease), transform .35s var(--ease), color .2s}
+.work__item p{grid-column:1; color:var(--soft); font-size:15px}
+.work__item .go{grid-row:1; grid-column:2; font-size:15px; color:var(--soft); transition:color .2s}
+.work__item:hover h3,.work__item.is-active h3{font-stretch:100%; transform:translateX(8px)}
+.work__item:hover .go,.work__item.is-active .go{color:var(--red)}
+.thumbwrap{display:none}
+.work__draft{padding:22px 0; color:var(--soft); display:flex; align-items:center; gap:14px; border-top:1px solid var(--line)}
+.work__draft img{width:64px}
+.work__preview{grid-column:8 / span 5; position:sticky; top:108px}
+.frame{position:relative; background:var(--tint); aspect-ratio:606/474; overflow:hidden; border-radius:6px}
+.frame img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transform:scale(1.03); transition:opacity .45s var(--ease), transform .6s var(--ease)}
+.frame img.is-on{opacity:1; transform:none}
+.preview__cap{margin-top:14px; display:flex; justify-content:space-between; gap:16px; font-size:15px; color:var(--soft)}
+.preview__cap b{color:var(--ink); font-weight:650}
+
+/* =================== Philosophy =================== */
+.philo{display:grid; grid-template-columns:repeat(12,1fr); gap:24px}
+.quote{grid-column:1 / -1; font-weight:250; font-size:clamp(56px,9vw,168px); line-height:.9; letter-spacing:-.045em}
+.quote em{font-style:normal; font-weight:800; font-stretch:75%; color:var(--red); display:inline-block}
+.seesaw{grid-column:1 / -1; position:relative; height:230px; margin-top:clamp(40px,5vw,72px)}
+.beam{position:absolute; left:50%; bottom:90px; width:min(980px,100%); transform:translateX(-50%) rotate(3deg); transform-origin:50% 100%}
+.plank{display:grid; place-items:center; height:64px; background:var(--red); color:#fff; font-weight:750; font-stretch:85%; font-size:clamp(22px,2.8vw,40px); border-radius:12px; letter-spacing:.02em}
+.ball{position:absolute; bottom:64px; right:28px; width:72px; height:72px}
+.fulcrum{position:absolute; left:50%; bottom:0; width:120px; height:90px; transform:translateX(-50%); color:var(--ink)}
+.philo p{grid-column:5 / span 7; font-size:clamp(18px,1.5vw,21px); margin-top:clamp(32px,4vw,56px)}
+
+/* =================== Toolkit =================== */
+.tools{display:grid; grid-template-columns:4fr 2fr 3fr; gap:24px}
+.tools section{border:1.5px solid var(--ink); border-radius:6px; padding:28px; position:relative}
+.tools h3{font-weight:750; font-stretch:88%; font-size:24px; letter-spacing:-.01em}
+.tools h3 + p{color:var(--soft); font-size:15px; margin-top:2px}
+.tools ul{display:flex; flex-wrap:wrap; gap:18px 22px; margin-top:28px}
+.tools li{display:grid; justify-items:center; gap:8px; font-size:14px; width:82px; text-align:center; color:var(--soft)}
+.tools .ico{display:block; width:64px; height:64px}
+.tools img{width:64px; height:64px; object-fit:contain}
+
+/* =================== Playground =================== */
+.play{display:grid; grid-template-columns:repeat(3,1fr); gap:24px}
+.play article{background:var(--tint); border-radius:6px; padding:24px; display:flex; flex-direction:column; gap:16px; transition:transform .4s var(--ease)}
+.play .logo{height:140px; background:#fff; border-radius:3px; overflow:hidden}
+.play .logo img{width:100%; height:100%; object-fit:cover}
+.play .logo--contain img{object-fit:contain}
+.play h3{font-weight:720; font-stretch:88%; font-size:clamp(20px,1.8vw,26px); letter-spacing:-.015em; line-height:1.15}
+.play p{color:var(--soft); font-size:15px}
+
+/* =================== Contact =================== */
+.hello{display:grid; grid-template-columns:repeat(12,1fr); gap:24px; align-items:end}
+.hello figure{grid-column:1 / span 4; border-radius:6px; overflow:hidden; aspect-ratio:364/520; background:var(--red)}
+.hello figure img{width:100%; height:100%; object-fit:cover; object-position:50% 100%; filter:grayscale(1) contrast(1.05)}
+
+.hello__txt{grid-column:6 / span 7; display:grid; gap:24px}
+.hello__txt h2{font-weight:760; font-stretch:82%; font-size:clamp(46px,6vw,96px); line-height:.92; letter-spacing:-.035em}
+.hello__txt > p{font-size:clamp(18px,1.5vw,21px)}
+.mail{font-weight:680; font-size:clamp(22px,3.2vw,46px); letter-spacing:-.02em; text-decoration:none; overflow-wrap:anywhere; background:linear-gradient(var(--red),var(--red)) 0 100%/100% 3px no-repeat; padding-bottom:4px; width:fit-content; display:inline-block; transition:color .2s, transform .25s var(--ease)}
+.mail:hover{color:var(--red)}
+.elsewhere{display:flex; flex-wrap:wrap; gap:4px 24px}
+.elsewhere a{font-size:16px; padding-block:10px; display:inline-block; text-underline-offset:5px; text-decoration-color:var(--red)}
+.motto{color:var(--soft)}
+
+/* =================== End + footer =================== */
+.end{padding-top:clamp(72px,9vw,120px); border-top:1px solid var(--line); overflow:hidden}
+.end__stage{display:flex; align-items:flex-end; justify-content:center; gap:clamp(16px,3vw,40px)}
+.bubble{position:relative; background:var(--ink); color:#fff; border-radius:24px; padding:22px 28px; margin-bottom:clamp(120px,14vw,190px); max-width:440px}
+.bubble::after{content:''; position:absolute; right:-14px; bottom:26px; border:14px solid transparent; border-left-color:var(--ink); border-right:0}
+.bubble p{font-weight:680; font-stretch:88%; font-size:clamp(20px,2.2vw,30px); line-height:1.15; letter-spacing:-.015em}
+.bubble p + p{color:var(--red-hi); font-weight:420; font-stretch:100%}
+.end .mascot--lg{margin-bottom:-2px}
+.foot{background:var(--ink); color:var(--paper); padding-block:28px 40px; font-size:15px}
+.foot__in{display:flex; justify-content:space-between; align-items:center; gap:12px 24px; flex-wrap:wrap}
+.foot ul{display:flex; flex-wrap:wrap; gap:4px 22px}
+.foot a{padding-block:8px; display:inline-block; text-underline-offset:4px; text-decoration-color:var(--red-hi)}
+.foot a:hover{color:var(--red-hi)}
+
+/* =========================================================
+   MOTION (runs in Motion; light touches in Pixel)
+   ========================================================= */
+@media (prefers-reduced-motion: no-preference){
+  /* ticker: smooth in Motion, stepped in Pixel, frozen in Code */
+  .ticker__track{animation:tick 30s linear infinite}
+  .ticker:hover .ticker__track{animation-play-state:paused}
+  .m-eyes{transform-box:fill-box; transform-origin:center; animation:blink 4.2s infinite}
+  @keyframes blink{0%,93%,100%{transform:scaleY(1)} 96%{transform:scaleY(.1)}}
+
+  /* Motion state: entrance + reveals */
+  html.enter .name .l{animation:rise .8s var(--ease) both; animation-delay:calc(var(--i) * 45ms)}
+  @keyframes rise{from{opacity:0; transform:translateY(45%) rotate(4deg)} to{opacity:1; transform:none}}
+  .art--back{animation:floatA 6s ease-in-out infinite}
+  .art--front{animation:floatB 5s ease-in-out infinite}
+  @keyframes floatA{50%{translate:0 -16px; rotate:-2deg}}
+  @keyframes floatB{50%{translate:0 12px; rotate:2.5deg}}
+  html.enter .hero__art{animation:popin 1s var(--ease) .25s both}
+  @keyframes popin{from{opacity:0; scale:.86; rotate:-4deg}}
+  html.enter .hero__intro, html.enter .hero__cta, html.enter .hero__mascot{animation:fadeup .8s var(--ease) .5s both}
+  @keyframes fadeup{from{opacity:0; transform:translateY(18px)}}
+  html.enter .note{animation:fadeup .7s var(--ease) 1s both}
+  .beam{animation:rock 6s ease-in-out infinite alternate}
+  .ball{animation:roll 6s ease-in-out infinite alternate}
+  .seesaw:hover .beam, .seesaw:hover .ball{animation-play-state:paused}
+  @keyframes rock{from{transform:translateX(-50%) rotate(4deg)} to{transform:translateX(-50%) rotate(-4deg)}}
+  @keyframes roll{from{right:28px; transform:rotate(0)} to{right:calc(100% - 100px); transform:rotate(-540deg)}}
+  @keyframes float{50%{transform:translateY(-10px) rotate(-4deg)}}
+  .rv:not(.is-in){opacity:0; transform:translateY(28px)}
+  .rv{transition:opacity .8s var(--ease), transform .8s var(--ease); transition-delay:calc(var(--d,0) * 70ms)}
+  .mask:not(.is-in){clip-path:inset(0 0 100% 0); transform:translateY(20px)}
+  .mask{transition:clip-path 1s var(--ease), transform 1s var(--ease)}
+  .statement:not(.is-in) .w{opacity:.12; transform:translateY(16px)}
+  .statement .w{transition:opacity .6s var(--ease), transform .6s var(--ease); transition-delay:calc(var(--i) * 70ms)}
+  .tools li .ico{animation:bob 3.2s ease-in-out infinite; animation-delay:calc(var(--n,0) * -.4s)}
+  @keyframes bob{50%{transform:translateY(-8px)}}
+  .tools li:hover .ico{animation-play-state:paused; transform:rotate(-8deg) scale(1.12); transition:transform .25s var(--ease)}
+  .play article:hover{transform:rotate(-1.5deg) translateY(-8px)}
+  .play article:nth-child(2):hover{transform:rotate(1.5deg) translateY(-8px)}
+  .quote em{animation:stretch 2.6s var(--ease) infinite alternate}
+  @keyframes stretch{from{font-stretch:75%} to{font-stretch:100%}}
+  .end .mascot--lg{animation:breathe 4s ease-in-out infinite}
+  @keyframes breathe{50%{scale:1.015 1.03}}
+  .end .mascot--lg{transform-origin:50% 100%}
+  .bubble.is-in{animation:pop .6s var(--ease) both}
+  @keyframes pop{from{scale:.8; opacity:0}}
+  .frame{transition:transform .5s var(--ease)}
+  @supports (animation-timeline: scroll()){
+    .progress{opacity:1; animation:grow linear both; animation-timeline:scroll(root)}
+    @keyframes grow{to{transform:scaleX(1)}}
+  }
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{transition-duration:.01ms !important; animation:none !important; scroll-behavior:auto !important}
+}
+
+/* =================== Responsive =================== */
+@media (max-width:1023px){
+  .links{display:none}
+  .top__in{gap:14px}
+  .brand{margin-right:auto}
+  .hero__top{grid-template-columns:1fr}
+  .hero__art{width:min(460px,86%); margin:8px auto 0}
+  .note{display:none}
+  .hero__grid{grid-template-columns:1fr; row-gap:28px}
+  .hero__intro{grid-column:1 / -1}
+  .hero__mascot{grid-column:1 / -1; grid-row:1}
+  .hero__cta{grid-column:1 / -1; justify-self:start; justify-items:start}
+  .seesaw{height:180px}
+  .hero__try{grid-column:1 / -1; justify-self:start; justify-items:start; text-align:left}
+  .h2,.sec__head p{grid-column:1 / -1}
+  .about__body > p,.states{grid-column:1 / -1}
+  .work__list{grid-column:1 / -1}
+  .work__preview{display:none}
+  .thumbwrap{display:block; grid-column:1 / -1; margin-top:14px; aspect-ratio:606/474; border-radius:6px; overflow:hidden}
+  .thumbwrap img{width:100%; height:100%; object-fit:cover}
+  .philo p{grid-column:1 / -1}
+  .tools{grid-template-columns:1fr}
+  .play{grid-template-columns:1fr 1fr}
+  .play article:last-child{grid-column:1 / -1}
+  .hello figure{grid-column:1 / span 5}
+  .hello__txt{grid-column:6 / -1}
+}
+@media (max-width:639px){
+  body{font-size:16px}
+  .end__stage{flex-direction:column; align-items:center}
+  .bubble{margin-bottom:6px}
+  .bubble::after{right:auto; left:50%; bottom:-14px; translate:-50% 0; border:14px solid transparent; border-top-color:var(--ink); border-bottom:0}
+  .name{font-size:26vw}
+  .beam{bottom:58px}
+  .plank{height:46px; font-size:22px}
+  .ball{width:48px; height:48px; bottom:46px}
+  .fulcrum{width:76px; height:58px}
+  .ticker{top:28px}
+  .talk{padding:9px 14px; font-size:14px}
+  .play{grid-template-columns:1fr}
+  .hello figure,.hello__txt{grid-column:1 / -1}
+  .hello figure{max-width:360px}
+  .states li{grid-template-columns:76px 1fr}
+  .tools section{padding:22px}
+  .tools li{width:72px}
+  .tools .ico,.tools img{width:56px; height:56px}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" aria-hidden="true"></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="mascot" viewBox="0 0 80 80">
+    <circle class="m-face" cx="40" cy="40" r="38"/>
+    <g class="m-eyes" fill="none" stroke-width="2.6" stroke-linecap="round" style="stroke:var(--red)">
+      <rect x="17" y="40" width="16" height="16" rx="3"/><path d="M21 44l8 8M29 44l-8 8"/>
+      <rect x="47" y="40" width="16" height="16" rx="3"/><path d="M51 44l8 8M59 44l-8 8"/>
+    </g>
+  </symbol>
+  <symbol id="mascot-px" viewBox="0 0 20 20"><g shape-rendering="crispEdges"><g class="px-face" style="fill:var(--face)"><rect x="8" y="0" width="4" height="1"/><rect x="5" y="1" width="10" height="1"/><rect x="4" y="2" width="12" height="1"/><rect x="3" y="3" width="14" height="1"/><rect x="2" y="4" width="16" height="1"/><rect x="1" y="5" width="18" height="1"/><rect x="1" y="6" width="18" height="1"/><rect x="1" y="7" width="18" height="1"/><rect x="0" y="8" width="20" height="1"/><rect x="0" y="9" width="20" height="1"/><rect x="0" y="10" width="20" height="1"/><rect x="0" y="11" width="20" height="1"/><rect x="1" y="12" width="18" height="1"/><rect x="1" y="13" width="18" height="1"/><rect x="1" y="14" width="18" height="1"/><rect x="2" y="15" width="16" height="1"/><rect x="3" y="16" width="14" height="1"/><rect x="4" y="17" width="12" height="1"/><rect x="5" y="18" width="10" height="1"/><rect x="8" y="19" width="4" height="1"/></g><g class="px-eyes" style="fill:var(--red)"><rect x="4" y="10" width="1" height="1"/><rect x="4" y="11" width="1" height="1"/><rect x="4" y="12" width="1" height="1"/><rect x="4" y="13" width="1" height="1"/><rect x="4" y="14" width="1" height="1"/><rect x="5" y="10" width="1" height="1"/><rect x="5" y="11" width="1" height="1"/><rect x="5" y="13" width="1" height="1"/><rect x="5" y="14" width="1" height="1"/><rect x="6" y="10" width="1" height="1"/><rect x="6" y="12" width="1" height="1"/><rect x="6" y="14" width="1" height="1"/><rect x="7" y="10" width="1" height="1"/><rect x="7" y="11" width="1" height="1"/><rect x="7" y="13" width="1" height="1"/><rect x="7" y="14" width="1" height="1"/><rect x="8" y="10" width="1" height="1"/><rect x="8" y="11" width="1" height="1"/><rect x="8" y="12" width="1" height="1"/><rect x="8" y="13" width="1" height="1"/><rect x="8" y="14" width="1" height="1"/><rect x="11" y="10" width="1" height="1"/><rect x="11" y="11" width="1" height="1"/><rect x="11" y="12" width="1" height="1"/><rect x="11" y="13" width="1" height="1"/><rect x="11" y="14" width="1" height="1"/><rect x="12" y="10" width="1" height="1"/><rect x="12" y="11" width="1" height="1"/><rect x="12" y="13" width="1" height="1"/><rect x="12" y="14" width="1" height="1"/><rect x="13" y="10" width="1" height="1"/><rect x="13" y="12" width="1" height="1"/><rect x="13" y="14" width="1" height="1"/><rect x="14" y="10" width="1" height="1"/><rect x="14" y="11" width="1" height="1"/><rect x="14" y="13" width="1" height="1"/><rect x="14" y="14" width="1" height="1"/><rect x="15" y="10" width="1" height="1"/><rect x="15" y="11" width="1" height="1"/><rect x="15" y="12" width="1" height="1"/><rect x="15" y="13" width="1" height="1"/><rect x="15" y="14" width="1" height="1"/></g></g></symbol>
+</svg>
+
+
+<header class="top">
+  <div class="wrap top__in">
+    <a class="brand" href="#hero"><img class="logo-img" src="favicon-96x96.png" width="36" height="36" alt=""><span>Junks<span class="dot">of</span>JV</span></a>
+    <nav class="links" aria-label="Primary"><a href="#work">Crafts</a><a href="#about">About</a><a href="#toolkit">Toolkit</a><a href="#playground">Playground</a></nav>
+        <a class="talk" href="#contact" data-magnet>Let's talk</a>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="hero" aria-labelledby="name">
+    <div class="wrap">
+      <div class="hero__top">
+        <h1 class="name" id="name" aria-label="Junks of JV"><span aria-hidden="true"><span class="l" style="--i:0">J</span><span class="l" style="--i:1">u</span><span class="l" style="--i:2">n</span><span class="l" style="--i:3">k</span><span class="l" style="--i:4">s</span></span><br><span aria-hidden="true"><span class="l of" style="--i:5">o</span><span class="l of" style="--i:6">f</span>&nbsp;<span class="l" style="--i:7">J</span><span class="l" style="--i:8">V</span><span class="l of" style="--i:9">.</span></span></h1>
+        <div class="hero__art" aria-hidden="true">
+          <div class="art art--back"><img src="assets/diamond_head.webp" width="371" height="371" alt="" fetchpriority="high"></div>
+          <div class="art art--front"><img src="assets/four_arms.webp" width="430" height="430" alt="" fetchpriority="high"></div>
+        </div>
+      </div>
+      <div class="hero__grid">
+        <div class="hero__mascot"><div class="mascot" data-mascot role="img" aria-label="Cartoon of Jegadeesh, following your cursor"></div></div>
+        <p class="hero__intro">Digital experiences designed, animated, and developed by JunksofJV. Creating products that users enjoy using and brands are proud to showcase.</p>
+        <div class="hero__cta">
+          <p class="tagline">Pixel. <span class="dot">Motion.</span> Code.</p>
+          <div class="ctas"><a class="btn btn--red" href="#contact" data-magnet>Let's talk</a><a class="btn btn--line" href="#work">See the crafts</a></div>
+        </div>
+      </div>
+    </div>
+    <div class="note" aria-hidden="true"><img src="assets/arrow.webp" width="210" height="139" alt=""><p>shall we<span class="dot">..?</span></p></div>
+  </section>
+
+  <div class="ticker" aria-hidden="true"><div class="ticker__track">
+    <div class="ticker__g">Pixel <b>×</b> Motion <b>×</b> Code <b>×</b> Design <b>×</b> Animate <b>×</b> Build <b>×</b></div>
+    <div class="ticker__g">Pixel <b>×</b> Motion <b>×</b> Code <b>×</b> Design <b>×</b> Animate <b>×</b> Build <b>×</b></div>
+    <div class="ticker__g">Pixel <b>×</b> Motion <b>×</b> Code <b>×</b> Design <b>×</b> Animate <b>×</b> Build <b>×</b></div>
+    <div class="ticker__g">Pixel <b>×</b> Motion <b>×</b> Code <b>×</b> Design <b>×</b> Animate <b>×</b> Build <b>×</b></div>
+  </div></div>
+
+  <div class="about-wrap">
+  <section class="about" id="about" aria-labelledby="about-h">
+    <div class="wrap about__in">
+      <h2 class="statement" id="about-h"><span class="not">Not</span> <span class="w face" aria-hidden="true"><img class="face__gif" src="assets/specsboy.gif" width="150" height="133" alt=""></span> <span class="not">just a</span> <span class="r">designer.</span><br><span class="not">Not just a</span> developer.</h2>
+      <div class="about__body">
+        <p class="rv">I sit at the intersection of <em>design</em>, <em>motion</em>, and <em>frontend development</em>. Over the past 2+ years, I've been helping transform ideas into polished digital experiences, from wireframes and interfaces to micro-interactions, animations, and production-ready websites.</p>
+        <ul class="states rv" style="--d:2">
+          <li><b>Pixel</b><span>Wireframes and interfaces</span></li>
+          <li><b>Motion</b><span>Micro-interactions and animations</span></li>
+          <li><b>Code</b><span>Production-ready websites</span></li>
+        </ul>
+      </div>
+    </div>
+
+  </section>
+  <div class="drip-edge" aria-hidden="true"></div>
+  </div>
+
+  <section class="sec" id="work" aria-labelledby="work-h">
+    <div class="wrap">
+      <div class="sec__head"><h2 class="h2 stickers mask" id="work-h" aria-label="What I bring"><span class="sticker">What</span> <span>i</span> <span class="sticker">bring!</span></h2><p class="rv">Selected crafts across brand, product and web. Seven projects, and one more on the desk.</p></div>
+      <div class="work">
+        <div class="work__list">
+          <a class="work__item is-active rv" style="--d:0" data-img="0" href="https://www.behance.net/gallery/250113157/Fork-Fire-Restaurant-Brand-Web-Design" target="_blank" rel="noopener noreferrer"><h3>Fork &amp; Fire</h3><span class="go">Behance</span><p>Restaurant brand and web design</p><span class="thumbwrap pix" data-base="14"><img src="assets/Fork&amp;Fire.webp" width="606" height="474" alt="Fork &amp; Fire website on a laptop" loading="lazy"></span></a>
+          <a class="work__item rv" style="--d:1" data-img="1" href="https://www.behance.net/gallery/204769055/Atelier-(The-Virtual-Art-Gallery)-UI-Concept-Web-Design" target="_blank" rel="noopener noreferrer"><h3>Atelier</h3><span class="go">Behance</span><p>Virtual art gallery, UI concept</p><span class="thumbwrap pix" data-base="14"><img src="assets/atelier.webp" width="606" height="474" alt="Atelier virtual gallery concept" loading="lazy"></span></a>
+          <a class="work__item rv" style="--d:2" data-img="2" href="https://www.behance.net/gallery/189703741/Triprr-Travel-Management-App-UI-UX-case-Study" target="_blank" rel="noopener noreferrer"><h3>Triprr</h3><span class="go">Behance</span><p>Travel management app, UX case study</p><span class="thumbwrap pix" data-base="14"><img src="assets/Triprr.webp" width="606" height="474" alt="Triprr app on a phone" loading="lazy"></span></a>
+          <a class="work__item rv" style="--d:3" data-img="3" href="https://www.behance.net/gallery/187515597/HapiPay-Digital-Payment-Application-UI" target="_blank" rel="noopener noreferrer"><h3>HapiPay</h3><span class="go">Behance</span><p>Digital payment app UI</p><span class="thumbwrap pix" data-base="14"><img src="assets/HAPIPAY.webp" width="606" height="474" alt="HapiPay app on a phone" loading="lazy"></span></a>
+          <a class="work__item rv" style="--d:4" data-img="4" href="https://www.behance.net/gallery/201754685/My-Space-(An-Inventory-Management-Dashboard-UI)" target="_blank" rel="noopener noreferrer"><h3>My Space</h3><span class="go">Behance</span><p>Inventory management dashboard</p><span class="thumbwrap pix" data-base="14"><img src="assets/MySpace.webp" width="606" height="474" alt="My Space dashboard" loading="lazy"></span></a>
+          <a class="work__item rv" style="--d:4" data-img="5" href="https://www.behance.net/gallery/194049717/X-Men-Apocalypse-(Movie-Website-UI-Design)" target="_blank" rel="noopener noreferrer"><h3>X-Men Apocalypse</h3><span class="go">Behance</span><p>Movie website UI design</p><span class="thumbwrap pix" data-base="14"><img src="assets/X-MEN APOCALYPSE.webp" width="606" height="474" alt="X-Men Apocalypse website" loading="lazy"></span></a>
+          <a class="work__item rv" style="--d:4" data-img="6" href="https://www.behance.net/gallery/204569631/XYZ-Industries-(Real-Estate-Landing-page-UI-Design)" target="_blank" rel="noopener noreferrer"><h3>XYZ Industries</h3><span class="go">Behance</span><p>Real-estate landing page</p><span class="thumbwrap pix" data-base="14"><img src="assets/XYZIndustries.webp" width="606" height="474" alt="XYZ Industries landing page" loading="lazy"></span></a>
+          <div class="work__draft"><img src="assets/Hang.gif" width="150" height="120" alt="" loading="lazy"><span>Drafting the next one.</span></div>
+        </div>
+        <div class="work__preview" aria-hidden="true">
+          <div class="frame" id="frame">
+            <img class="is-on" src="assets/Fork&amp;Fire.webp" width="606" height="474" alt="">
+            <img src="assets/atelier.webp" width="606" height="474" alt="" loading="lazy">
+            <img src="assets/Triprr.webp" width="606" height="474" alt="" loading="lazy">
+            <img src="assets/HAPIPAY.webp" width="606" height="474" alt="" loading="lazy">
+            <img src="assets/MySpace.webp" width="606" height="474" alt="" loading="lazy">
+            <img src="assets/X-MEN APOCALYPSE.webp" width="606" height="474" alt="" loading="lazy">
+            <img src="assets/XYZIndustries.webp" width="606" height="474" alt="" loading="lazy">
+          </div>
+          <div class="preview__cap"><b class="cap-t">Fork &amp; Fire</b><span class="cap-h">Hover a title to preview</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="philosophy" aria-labelledby="philo-h">
+    <div class="wrap philo">
+      <h2 class="quote mask" id="philo-h">I design, therefore <em>I am.</em></h2>
+      <p class="rv">Every project begins as a collection of ideas, sketches, and possibilities. My role is to shape that creative chaos into something purposeful. JunksofJV is rooted in the belief that every idea has potential. Through design, motion, and code, I turn rough concepts into experiences worth remembering.</p>
+      <div class="seesaw" aria-hidden="true">
+        <div class="beam"><span class="ball mwrap"><svg class="m-sm"><use href="#mascot"/></svg></span><div class="plank">PITCH-IN</div></div>
+        <svg class="fulcrum" viewBox="0 0 120 90"><path d="M60 0L120 90H0Z" fill="currentColor"/></svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="toolkit" aria-labelledby="tk-h">
+    <div class="wrap">
+      <div class="sec__head"><h2 class="h2 mask" id="tk-h">Toolkit<span class="dot">.</span></h2><p class="rv">Nine tools, sorted by the state they serve.</p></div>
+      <div class="tools">
+        <section class="rv"><h3>Pixel</h3><p>Shaping the interface</p><ul><li style="--n:0"><span class="pix" data-base="5"><img src="assets/figma.webp" width="120" height="120" alt="" loading="lazy"></span>Figma</li><li style="--n:1"><span class="pix" data-base="5"><img src="assets/xd.webp" width="120" height="120" alt="" loading="lazy"></span>Adobe XD</li><li style="--n:2"><span class="pix" data-base="5"><img src="assets/ps.webp" width="120" height="120" alt="" loading="lazy"></span>Photoshop</li><li style="--n:3"><span class="pix" data-base="5"><img src="assets/ai.webp" width="120" height="120" alt="" loading="lazy"></span>Illustrator</li></ul></section>
+        <section class="rv" style="--d:1"><h3>Motion</h3><p>Making it move</p><ul><li style="--n:4"><span class="pix" data-base="5"><img src="assets/ae.webp" width="120" height="120" alt="" loading="lazy"></span>After Effects</li><li style="--n:5"><span class="pix" data-base="5"><img src="assets/lottie.webp" width="120" height="120" alt="" loading="lazy"></span>LottieFiles</li></ul></section>
+        <section class="rv" style="--d:2"><h3>Code</h3><p>Shipping it</p><ul><li style="--n:6"><span class="pix" data-base="5"><img src="assets/html5.webp" width="120" height="120" alt="" loading="lazy"></span>HTML</li><li style="--n:7"><span class="pix" data-base="5"><img src="assets/css3.webp" width="120" height="120" alt="" loading="lazy"></span>CSS</li><li style="--n:8"><span class="pix" data-base="5"><img src="assets/js.webp" width="120" height="120" alt="" loading="lazy"></span>JavaScript</li></ul></section>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="playground" aria-labelledby="pg-h">
+    <div class="wrap">
+      <div class="sec__head"><h2 class="h2 mask" id="pg-h">Playground<span class="dot">.</span></h2><p class="rv">This is where the junk becomes interesting.</p></div>
+      <div class="play">
+        <article class="rv"><div class="logo logo--contain"><img src="assets/retrohub.png" width="280" height="400" alt="RetroHub logo" loading="lazy"></div><h3>For the classic lovers</h3><p>A passion project exploring how retro culture, timeless products, and modern UX can come together to create a shopping experience that feels both familiar and fresh.</p></article>
+        <article class="rv" style="--d:1"><div class="logo"><img src="assets/atelier.png" width="280" height="400" alt="Atelier logo" loading="lazy"></div><h3>Art online</h3><p>A concept project exploring virtual exhibitions, interactive spaces, and curated collections through a seamless and engaging digital environment.</p></article>
+        <article class="rv" style="--d:2"><div class="logo"><img src="assets/x_men.png" width="280" height="400" alt="X-Men logo" loading="lazy"></div><h3>A movie franchise in hand</h3><p>A concept project focused on cinematic visuals, character-driven storytelling, and an engaging fan experience.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="contact" aria-labelledby="hello-h">
+    <div class="wrap hello">
+      <figure class="rv"><img src="assets/JV.png" width="786" height="1122" alt="Portrait of Jegadeesh" loading="lazy"></figure>
+      <div class="hello__txt">
+        <h2 class="mask" id="hello-h">Hey, I'm Jegadeesh<span class="dot">.</span></h2>
+        <p class="rv">I design interfaces, animate ideas, build digital experiences, and occasionally turn caffeine into creative solutions. From UI/UX and motion graphics to content and web design, I'm driven by making things look good, feel right, and work seamlessly.</p>
+        <a class="mail rv" style="--d:1" href="mailto:j.followedby.v@gmail.com" data-magnet>j.followedby.v@gmail.com</a>
+        <ul class="elsewhere rv" style="--d:2">
+          <li><a href="https://wa.me/919751395152" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
+          <li><a href="tel:+919751395152">+91 97513 95152</a></li>
+          <li><a href="https://www.linkedin.com/in/junksofjv/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          <li><a href="https://www.behance.net/j_followedby_v" target="_blank" rel="noopener noreferrer">Behance</a></li>
+        </ul>
+        <p class="motto">Creating. Experimenting. Evolving.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="end" aria-label="End of page">
+    <div class="wrap end__stage">
+      <div class="bubble rv"><p>You've reached the end of the scroll.</p><p>But the ideas don't stop here.</p></div>
+      <div class="mascot mascot--lg" data-mascot role="img" aria-label="Cartoon of Jegadeesh, waving goodbye with his eyes"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__in">
+    <span>© 2026 JunksofJV</span>
+    <ul aria-label="Follow">
+      <li><a href="https://www.behance.net/j_followedby_v" target="_blank" rel="noopener noreferrer">Behance</a></li>
+      <li><a href="https://www.linkedin.com/in/junksofjv/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+      <li><a href="https://www.youtube.com/@junksofjv" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+      <li><a href="https://www.instagram.com/junksofjv.studio/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+      <li><a href="https://lottiefiles.com/user/31aaace3-fb76-46e3-a35f-037290746fb4" target="_blank" rel="noopener noreferrer">LottieFiles</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* Header border once scrolled */
+  const top = document.querySelector('.top'), s0 = document.createElement('div');
+  s0.style.cssText = 'position:absolute;top:0;height:1px;width:1px'; document.body.prepend(s0);
+  new IntersectionObserver(([e]) => top.classList.toggle('is-stuck', !e.isIntersecting)).observe(s0);
+
+  /* Crafts index: hover or focus swaps the sticky preview */
+  const frame = document.getElementById('frame'), imgs = [...frame.querySelectorAll('img')], items = [...document.querySelectorAll('.work__item')], cap = document.querySelector('.cap-t');
+  const show = it => { items.forEach(i => i.classList.toggle('is-active', i === it)); imgs.forEach((im, n) => im.classList.toggle('is-on', n === +it.dataset.img)); cap.textContent = it.querySelector('h3').textContent; };
+  items.forEach(it => { it.addEventListener('mouseenter', () => show(it)); it.addEventListener('focus', () => show(it)); });
+
+  /* Reveals: statement words, masks, fade-ups */
+  const st = document.querySelector('.statement');
+  st.querySelectorAll('.not, .r, .face').forEach(n => n.classList.add('w'));
+  st.childNodes.forEach(n => { if (n.nodeType === 3 && n.textContent.trim()){ const sp = document.createElement('span'); sp.className = 'w'; sp.textContent = n.textContent.trim(); n.replaceWith(document.createTextNode(' '), sp); } });
+  st.querySelectorAll('.w').forEach((w, i) => w.style.setProperty('--i', i));
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting || e.boundingClientRect.top < 0){ e.target.classList.add('is-in'); io.unobserve(e.target); } }), { threshold: [0, .25], rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.rv, .mask, .statement').forEach(el => io.observe(el));
+  if (!reduce.matches) root.classList.add('enter');
+
+  /* Mascot: picks one of nine frames so it always looks toward the cursor */
+  const mascots = [...document.querySelectorAll('[data-mascot]')];
+  let lastMove = 0;
+  function look(m, x, y){
+    const r = m.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height * .42;
+    const dx = x - cx, dy = y - cy, d = Math.hypot(dx, dy);
+    let col = 1, row = 1;
+    if (d > r.width * .45){ const nx = dx / d, ny = dy / d; col = nx < -.38 ? 0 : nx > .38 ? 2 : 1; row = ny < -.38 ? 0 : ny > .38 ? 2 : 1; }
+    m.style.setProperty('--mx', col); m.style.setProperty('--my', row);
+  }
+  // when nobody is moving a pointer (idle or touch), he glances around on his own
+  setInterval(() => {
+    if (Date.now() - lastMove < 3500) return;
+    mascots.forEach(m => { const pick = Math.random() < .35 ? [1, 1] : [Math.floor(Math.random() * 3), Math.floor(Math.random() * 3)]; m.style.setProperty('--mx', pick[0]); m.style.setProperty('--my', pick[1]); });
+  }, 1800);
+
+  /* Pointer-driven motion: breathing letters, art parallax, preview tilt, magnets, mascot gaze */
+  const letters = [...document.querySelectorAll('.name .l')], eyes = document.getElementById('trackEyes'), heroArt = document.querySelector('.hero__art'), arts = [...document.querySelectorAll('.art')], magnets = [...document.querySelectorAll('[data-magnet]')];
+  let px = -9999, py = -9999, raf = 0;
+  function tick(){
+    raf = 0;
+    mascots.forEach(m => look(m, px, py));
+    if (reduce.matches) return;
+    letters.forEach(l => {
+      const r = l.getBoundingClientRect(), d = Math.hypot(px - (r.left + r.width / 2), py - (r.top + r.height / 2)), k = Math.max(0, 1 - d / 420);
+      l.style.setProperty('--w', (82 + k * 18).toFixed(1)); l.style.setProperty('--wg', Math.round(780 - 380 * k + 20 * k * k));
+    });
+    const hr = heroArt.getBoundingClientRect();
+    if (hr.width && py < hr.bottom + 240){ const tx = (px - (hr.left + hr.width / 2)) / hr.width, ty = (py - (hr.top + hr.height / 2)) / hr.height;
+      arts[0].style.transform = `translate(${(tx * -14).toFixed(1)}px,${(ty * -12).toFixed(1)}px)`; arts[1].style.transform = `translate(${(tx * 18).toFixed(1)}px,${(ty * 14).toFixed(1)}px)`; }
+    const fr = frame.getBoundingClientRect();
+    if (fr.width && py > fr.top - 200 && py < fr.bottom + 200){ const rx = (py - (fr.top + fr.height / 2)) / fr.height, ry = (px - (fr.left + fr.width / 2)) / fr.width; frame.style.transform = `perspective(900px) rotateX(${(-rx * 5).toFixed(2)}deg) rotateY(${(ry * 7).toFixed(2)}deg)`; }
+    magnets.forEach(mg => { const r = mg.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2, dx = px - cx, dy = py - cy, R = Math.max(r.width, 90); mg.style.transform = Math.hypot(dx, dy) < R ? `translate(${(dx * .25).toFixed(1)}px,${(dy * .3).toFixed(1)}px)` : ''; });
+  }
+  addEventListener('pointermove', e => { px = e.clientX; py = e.clientY; lastMove = Date.now(); if (!raf) raf = requestAnimationFrame(tick); }, { passive: true });
+  addEventListener('scroll', () => { if (px > -9999 && !raf) raf = requestAnimationFrame(tick); }, { passive: true });
+})();
+</script>
+</body>
+</html>
