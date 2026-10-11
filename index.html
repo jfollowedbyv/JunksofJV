@@ -1432,15 +1432,17 @@
     }
 
     .lb--tall {
-    width: auto;
-    display: flex;
-    justify-content: center;
+    width: min(92vw, 506px);
+    max-width: none;
+    margin: auto;
 }
 
-    .lb--tall .lb__stage {
-      aspect-ratio: 9/16;
-      height: min(86vh, 900px)
-    }
+.lb--tall .lb__stage {
+    aspect-ratio: 9 / 16;
+    width: 100%;
+    height: min(86vh, 900px);
+}
+
 
     .lb__stage video,
     .lb__stage iframe {
